@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aura Events — Plan Your Event</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --gold:#8B5E3C; --gold-light:#C49A6C; --gold-dark:#5C3D22;
+  --black:#FDFAF7; --dark:#F5EFE6; --dark2:#EDE4D8; --dark3:#E3D5C4;
+  --white:#2C1A0E; --gray:#6B4C35; --gray-light:#5C3D22;
+  --font-display:'Bebas Neue',sans-serif;
+  --font-serif:'Cormorant Garamond',serif;
+  --font-body:'DM Sans',sans-serif;
+  --tr:all 0.35s cubic-bezier(.4,0,.2,1);
+  --theme-primary:#8B5E3C;
+  --theme-bg:#FDFAF7;
+  --theme-accent:#C49A6C;
+  --theme-glow:rgba(139,94,60,0.12);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);overflow-x:hidden;min-height:100vh;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--gold);}
+em{font-style:italic;color:var(--gold);font-family:var(--font-serif);}
+
+/* ── TOP NAV ── */
+.top-nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 48px;background:rgba(253,250,247,0.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(139,94,60,0.18);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-star{color:var(--gold);font-size:18px;animation:spin 8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo-txt{font-family:var(--font-display);font-size:20px;letter-spacing:.1em;color:var(--white);font-weight:700;}
+.logo-txt em{font-family:var(--font-serif);font-size:16px;}
+.nav-back{font-size:13px;color:var(--gray);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(139,94,60,0.25);padding:8px 20px;transition:var(--tr);font-weight:500;}
+.nav-back:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{position:fixed;top:65px;left:0;right:0;z-index:99;background:#F0E8DC;border-bottom:1px solid rgba(139,94,60,0.15);}
+.progress-steps{display:flex;align-items:stretch;max-width:900px;margin:0 auto;}
+.progress-step{flex:1;display:flex;flex-direction:column;align-items:center;padding:12px 8px;gap:6px;cursor:pointer;position:relative;transition:var(--tr);border-bottom:2px solid transparent;}
+.progress-step.active{border-bottom-color:var(--gold);}
+.progress-step.done{border-bottom-color:rgba(139,94,60,0.4);}
+.step-num{width:24px;height:24px;border-radius:50%;border:1.5px solid rgba(139,94,60,0.25);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gray);transition:var(--tr);font-weight:500;}
+.progress-step.active .step-num{background:var(--gold);border-color:var(--gold);color:#FFF;font-weight:700;}
+.progress-step.done .step-num{background:rgba(139,94,60,0.15);border-color:rgba(139,94,60,0.4);color:var(--gold);}
+.step-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--gray);text-align:center;transition:var(--tr);font-weight:500;}
+.progress-step.active .step-lbl{color:var(--gold);font-weight:700;}
+.progress-step.done .step-lbl{color:rgba(139,94,60,0.6);}
+
+/* ── MAIN WRAPPER ── */
+.planner{padding:140px 48px 80px;max-width:1100px;margin:0 auto;}
+
+/* ── STEP PANELS ── */
+.step-panel{display:none;animation:fadeUp .5s ease both;}
+.step-panel.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── SECTION HEADER ── */
+.panel-header{margin-bottom:48px;}
+.panel-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.panel-title{font-family:var(--font-serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:600;line-height:1.1;color:#2C1A0E;}
+.panel-sub{font-size:.95rem;color:var(--gray);line-height:1.75;margin-top:10px;max-width:560px;font-weight:400;}
+
+/* ── EVENT TYPE GRID ── */
+.event-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.event-card{background:#FFF;border:1.5px solid rgba(139,94,60,0.15);padding:32px 24px;cursor:pointer;position:relative;overflow:hidden;transition:var(--tr);border-radius:4px;box-shadow:0 2px 8px rgba(139,94,60,0.06);}
+.event-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,var(--theme-glow),transparent 70%);opacity:0;transition:var(--tr);}
+.event-card:hover::before,.event-card.selected::before{opacity:1;}
+.event-card:hover,.event-card.selected{border-color:var(--theme-primary);transform:translateY(-4px);box-shadow:0 8px 24px rgba(139,94,60,0.15);}
+.event-card.selected{background:rgba(139,94,60,0.04);}
+.ev-emoji{font-size:40px;margin-bottom:16px;display:block;}
+.ev-name{font-family:var(--font-serif);font-size:1.3rem;font-weight:600;margin-bottom:8px;color:#2C1A0E;}
+.ev-desc{font-size:12px;color:var(--gray);line-height:1.65;}
+.ev-price-from{margin-top:14px;font-size:11px;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;font-weight:700;}
+.selected-check{position:absolute;top:14px;right:14px;width:22px;height:22px;background:var(--gold);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:12px;color:#FFF;font-weight:700;}
+.event-card.selected .selected-check{display:flex;}
+
+/* ── THEME GRID ── */
+.theme-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+.theme-card{border:1.5px solid rgba(139,94,60,0.15);cursor:pointer;overflow:hidden;transition:var(--tr);position:relative;border-radius:4px;box-shadow:0 2px 6px rgba(139,94,60,0.06);}
+.theme-card:hover,.theme-card.selected{border-color:var(--theme-primary);transform:translateY(-3px);box-shadow:0 6px 18px rgba(139,94,60,0.15);}
+.theme-preview{height:120px;display:flex;align-items:center;justify-content:center;font-size:32px;position:relative;overflow:hidden;}
+.theme-info{padding:14px 16px;background:#FFF;}
+.theme-name{font-size:13px;font-weight:700;color:#2C1A0E;margin-bottom:3px;}
+.theme-sub{font-size:11px;color:var(--gray);}
+.theme-card.selected .theme-info{background:rgba(139,94,60,0.04);}
+.theme-sel-badge{position:absolute;top:8px;right:8px;background:var(--gold);color:#FFF;font-size:10px;font-weight:700;padding:3px 8px;display:none;border-radius:2px;}
+.theme-card.selected .theme-sel-badge{display:block;}
+
+/* ── PACKAGE CARDS ── */
+.package-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.pkg-card{background:#FFF;border:1.5px solid rgba(139,94,60,0.15);padding:36px 28px;cursor:pointer;position:relative;transition:var(--tr);overflow:hidden;border-radius:4px;box-shadow:0 2px 8px rgba(139,94,60,0.06);}
+.pkg-card:hover,.pkg-card.selected{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 8px 24px rgba(139,94,60,0.15);}
+.pkg-card.featured{border-color:rgba(139,94,60,0.4);background:rgba(139,94,60,0.03);}
+.pkg-badge{position:absolute;top:0;left:50%;transform:translateX(-50%);background:var(--gold);color:#FFF;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 16px;border-radius:0 0 4px 4px;}
+.pkg-name{font-family:var(--font-display);font-size:1.4rem;letter-spacing:.08em;margin-bottom:6px;margin-top:8px;color:#2C1A0E;}
+.pkg-price{font-family:var(--font-serif);font-size:2.2rem;color:var(--gold);font-weight:600;margin:12px 0;}
+.pkg-price span{font-size:14px;color:var(--gray);font-family:var(--font-body);font-weight:400;}
+.pkg-features{list-style:none;margin:16px 0;display:flex;flex-direction:column;gap:9px;}
+.pkg-features li{font-size:13px;color:#5C3D22;display:flex;align-items:center;gap:8px;font-weight:500;}
+.pkg-features li::before{content:'✦';color:var(--gold);font-size:10px;flex-shrink:0;}
+.pkg-sel-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(139,94,60,0.06),transparent 60%);pointer-events:none;}
+
+/* ── ADD-ONS ── */
+.addon-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;}
+.addon-card{background:#FFF;border:1.5px solid rgba(139,94,60,0.15);padding:20px;cursor:pointer;transition:var(--tr);display:flex;align-items:center;gap:14px;position:relative;border-radius:4px;}
+.addon-card:hover{border-color:rgba(139,94,60,0.4);}
+.addon-card.selected{border-color:var(--gold);background:rgba(139,94,60,0.04);}
+.addon-icon{font-size:26px;flex-shrink:0;}
+.addon-info{flex:1;}
+.addon-name{font-size:13px;font-weight:700;color:#2C1A0E;margin-bottom:3px;}
+.addon-price{font-size:12px;color:var(--gold);font-weight:600;}
+.addon-check{width:20px;height:20px;border:1.5px solid rgba(139,94,60,0.3);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:var(--tr);}
+.addon-card.selected .addon-check{background:var(--gold);border-color:var(--gold);color:#FFF;font-weight:700;}
+
+/* ── BOOKING FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--gray);font-weight:700;}
+.form-input,.form-select,.form-textarea{background:#FFF;border:1.5px solid rgba(139,94,60,0.2);color:#2C1A0E;padding:14px 18px;font-family:var(--font-body);font-size:14px;outline:none;transition:var(--tr);width:100%;appearance:none;resize:none;border-radius:3px;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);background:#FFFDF9;box-shadow:0 0 0 3px rgba(139,94,60,0.08);}
+.form-input::placeholder,.form-textarea::placeholder{color:rgba(139,94,60,0.35);}
+.form-select option{background:#FFF;color:#2C1A0E;}
+
+/* ── PRICE SUMMARY SIDEBAR ── */
+.layout-with-sidebar{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start;}
+.summary-card{background:#FFF;border:1.5px solid rgba(139,94,60,0.2);padding:28px;position:sticky;top:150px;border-radius:6px;box-shadow:0 4px 16px rgba(139,94,60,0.08);}
+.summary-title{font-family:var(--font-display);font-size:1.2rem;letter-spacing:.1em;color:var(--gold);margin-bottom:20px;padding-bottom:14px;border-bottom:1.5px solid rgba(139,94,60,0.15);font-weight:700;}
+.summary-line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;font-size:13px;}
+.summary-line .lbl{color:var(--gray);font-weight:500;}
+.summary-line .val{color:#2C1A0E;font-weight:700;}
+.summary-divider{border:none;border-top:1px solid rgba(139,94,60,0.1);margin:12px 0;}
+.summary-total{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;margin-top:4px;border-top:1.5px solid rgba(139,94,60,0.25);}
+.summary-total .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);font-weight:700;}
+.summary-total .val{font-family:var(--font-display);font-size:2rem;color:var(--gold);}
+.summary-empty{font-size:12px;color:rgba(139,94,60,0.4);text-align:center;padding:20px 0;font-style:italic;}
+.summary-event-chip{background:rgba(139,94,60,0.08);border:1px solid rgba(139,94,60,0.2);padding:8px 12px;margin-bottom:14px;font-size:12px;color:var(--gold);display:flex;align-items:center;gap:8px;font-weight:700;border-radius:3px;}
+
+/* ── BOOKING CONFIRMATION ── */
+.confirm-wrap{text-align:center;padding:60px 0;}
+.confirm-icon{font-size:72px;margin-bottom:24px;animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes popIn{from{opacity:0;transform:scale(.4);}to{opacity:1;transform:scale(1);}}
+.confirm-title{font-family:var(--font-serif);font-size:3rem;font-weight:600;margin-bottom:16px;color:#2C1A0E;}
+.confirm-sub{font-size:1rem;color:var(--gray);line-height:1.75;max-width:500px;margin:0 auto 40px;font-weight:400;}
+.confirm-box{background:#FFF;border:1.5px solid rgba(139,94,60,0.2);padding:32px;max-width:500px;margin:0 auto 32px;text-align:left;border-radius:6px;box-shadow:0 4px 16px rgba(139,94,60,0.08);}
+.confirm-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(139,94,60,0.08);font-size:13px;}
+.confirm-row:last-child{border-bottom:none;}
+.confirm-row .lk{color:var(--gray);font-weight:500;}
+.confirm-row .vl{color:#2C1A0E;font-weight:700;text-align:right;}
+.confirm-total{display:flex;justify-content:space-between;padding:16px 0 0;margin-top:8px;border-top:1.5px solid rgba(139,94,60,0.2);}
+.confirm-total .lk{color:var(--gold);font-size:13px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+.confirm-total .vl{font-family:var(--font-display);font-size:2rem;color:var(--gold);}
+.ref-id{display:inline-block;background:rgba(139,94,60,0.08);border:1.5px solid rgba(139,94,60,0.25);color:var(--gold);font-family:var(--font-display);letter-spacing:.2em;padding:10px 24px;font-size:1.1rem;margin-bottom:32px;border-radius:3px;}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:14px;justify-content:flex-end;margin-top:40px;flex-wrap:wrap;}
+.btn-next{background:var(--gold);color:#FFF;border:none;padding:14px 36px;font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:var(--tr);position:relative;overflow:hidden;border-radius:3px;}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;}
+.btn-next::before{content:'';position:absolute;inset:0;background:var(--gold-dark);transform:translateX(-100%);transition:transform .4s ease;}
+.btn-next:not(:disabled):hover::before{transform:translateX(0);}
+.btn-next span{position:relative;z-index:1;}
+.btn-back{background:transparent;color:var(--gray);border:1.5px solid rgba(139,94,60,0.25);padding:14px 28px;font-family:var(--font-body);font-size:13px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:var(--tr);border-radius:3px;font-weight:600;}
+.btn-back:hover{border-color:var(--gold);color:var(--gold);}
+.btn-confirm{background:var(--gold);color:#FFF;border:none;padding:16px 48px;font-family:var(--font-body);font-size:14px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:var(--tr);width:100%;position:relative;overflow:hidden;border-radius:3px;}
+.btn-confirm::before{content:'';position:absolute;inset:0;background:var(--gold-dark);transform:translateX(-100%);transition:transform .4s ease;}
+.btn-confirm:hover::before{transform:translateX(0);}
+.btn-confirm span{position:relative;z-index:1;}
+
+/* ── THEME PALETTE SWITCHER ── */
+.theme-wedding   {--theme-primary:#C2617A;--theme-glow:rgba(194,97,122,0.1);}
+.theme-corporate {--theme-primary:#4A7FB5;--theme-glow:rgba(74,127,181,0.1);}
+.theme-birthday  {--theme-primary:#C47D1A;--theme-glow:rgba(196,125,26,0.1);}
+.theme-cultural  {--theme-primary:#B85E2A;--theme-glow:rgba(184,94,42,0.1);}
+.theme-gala      {--theme-primary:#7B5EA7;--theme-glow:rgba(123,94,167,0.1);}
+.theme-concert   {--theme-primary:#2A8C82;--theme-glow:rgba(42,140,130,0.1);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .planner{padding:130px 24px 60px;}
+  .top-nav{padding:16px 24px;}
+  .event-grid,.package-grid{grid-template-columns:1fr 1fr;}
+  .layout-with-sidebar{grid-template-columns:1fr;}
+  .summary-card{position:static;}
+}
+@media(max-width:600px){
+  .event-grid,.package-grid{grid-template-columns:1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .progress-steps{gap:0;}
+  .step-lbl{display:none;}
+}
+/* ── Review Modal ── */
+.review-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(8,8,8,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;}
+.review-overlay.open{display:flex;}
+.review-modal{background:#fffdfb;border:1px solid rgba(201,169,110,0.3);padding:36px 32px;width:100%;max-width:460px;position:relative;animation:slideUp .45s cubic-bezier(.34,1.56,.64,1) both;border-radius:6px;box-shadow:0 24px 64px rgba(0,0,0,0.35);}
+@keyframes slideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+.review-modal::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.review-close{position:absolute;top:14px;right:16px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--gray);transition:color .2s;}
+.review-close:hover{color:var(--gold);}
+.review-header{text-align:center;margin-bottom:24px;}
+.review-header .r-icon{font-size:40px;margin-bottom:10px;}
+.review-header h2{font-family:var(--font-serif);font-size:1.6rem;font-weight:600;color:#2C1A0E;}
+.review-header p{font-size:13px;color:var(--gray);margin-top:6px;line-height:1.6;}
+.star-row-r{display:flex;justify-content:center;gap:10px;margin:18px 0 6px;}
+.r-star{font-size:36px;cursor:pointer;color:#ddd;transition:color .15s,transform .1s;user-select:none;}
+.r-star.lit{color:#E8A020;}
+.r-star:hover{transform:scale(1.2);}
+.star-label-r{text-align:center;font-size:12px;color:var(--gold);font-style:italic;min-height:18px;margin-bottom:14px;font-family:var(--font-serif);}
+.r-form-group{margin-bottom:14px;}
+.r-form-group label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gray);margin-bottom:5px;font-weight:700;}
+.r-form-group input,.r-form-group textarea{width:100%;padding:10px 14px;border:1px solid rgba(139,94,60,0.2);background:#FAFAF8;color:#2C1A0E;font-family:var(--font-body);font-size:13px;outline:none;border-radius:4px;transition:border .2s;}
+.r-form-group input:focus,.r-form-group textarea:focus{border-color:var(--gold);background:#fff;}
+.r-form-group textarea{resize:vertical;min-height:85px;line-height:1.6;}
+.r-submit-btn{width:100%;padding:13px;background:var(--gold);border:none;color:#fff;font-family:var(--font-body);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;border-radius:4px;transition:background .2s;margin-top:4px;}
+.r-submit-btn:hover{background:var(--gold-dark);}
+.r-skip{display:block;text-align:center;font-size:12px;color:var(--gray);margin-top:12px;cursor:pointer;text-decoration:underline;}
+.r-skip:hover{color:var(--gold);}
+.r-success{display:none;text-align:center;padding:20px 0 10px;}
+.r-success .s-icon{font-size:52px;margin-bottom:12px;}
+.r-success h3{font-family:var(--font-serif);font-size:1.5rem;color:#2C1A0E;margin-bottom:8px;}
+.r-success p{font-size:13px;color:var(--gray);line-height:1.6;}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <a href="index.html" class="nav-logo">
+    <span class="logo-star">✦</span>
+    <span class="logo-txt">AURA <em>Events</em></span>
+  </a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-steps" id="progressSteps">
+    <div class="progress-step active" data-step="0" onclick="jumpStep(0)">
+      <div class="step-num">1</div>
+      <div class="step-lbl">Event Type</div>
+    </div>
+    <div class="progress-step" data-step="1" onclick="jumpStep(1)">
+      <div class="step-num">2</div>
+      <div class="step-lbl">Theme</div>
+    </div>
+    <div class="progress-step" data-step="2" onclick="jumpStep(2)">
+      <div class="step-num">3</div>
+      <div class="step-lbl">Package</div>
+    </div>
+    <div class="progress-step" data-step="3" onclick="jumpStep(3)">
+      <div class="step-num">4</div>
+      <div class="step-lbl">Add-ons</div>
+    </div>
+    <div class="progress-step" data-step="4" onclick="jumpStep(4)">
+      <div class="step-num">5</div>
+      <div class="step-lbl">Booking</div>
+    </div>
+    <div class="progress-step" data-step="5">
+      <div class="step-num">6</div>
+      <div class="step-lbl">Confirm</div>
+    </div>
+  </div>
+</div>
+
+<div class="planner">
+
+  <!-- ══ STEP 1: EVENT TYPE ══ -->
+  <div class="step-panel active" id="step0">
+    <div class="panel-header">
+      <div class="panel-tag">✦ Step 1 of 5</div>
+      <h1 class="panel-title">What kind of event<br/>are you <em>planning?</em></h1>
+      <p class="panel-sub">Choose your event type — we'll customise everything from themes to pricing just for you.</p>
+    </div>
+    <div class="event-grid">
+      <div class="event-card" data-event="wedding" data-base="150000" onclick="selectEvent(this)">
+        <div class="selected-check">✓</div>
+        <span class="ev-emoji">💍</span>
+        <div class="ev-name">Wedding</div>
+        <div class="ev-desc">Grand ceremonies, receptions, mehendi, sangeet — a full wedding experience crafted to perfection.</div>
+        <div class="ev-price-from">Starting from ₹50,000</div>
+      </div>
+      <div class="event-card" data-event="corporate" data-base="80000" onclick="selectEvent(this)">
+        <div class="selected-check">✓</div>
+        <span class="ev-emoji">🏢</span>
+        <div class="ev-name">Corporate Event</div>
+        <div class="ev-desc">Product launches, conferences, team retreats — professional events that leave lasting impressions.</div>
+        <div class="ev-price-from">Starting from ₹35,000</div>
+      </div>
+      <div class="event-card" data-event="birthday" data-base="25000" onclick="selectEvent(this)">
+        <div class="selected-check">✓</div>
+        <span class="ev-emoji">🎂</span>
+        <div class="ev-name">Birthday Party</div>
+        <div class="ev-desc">From kids parties to milestone birthdays — fun, colorful, and unforgettable celebrations.</div>
+        <div class="ev-price-from">Starting from ₹40,000</div>
+      </div>
+      <div class="event-card" data-event="cultural" data-base="60000" onclick="selectEvent(this)">
+        <div class="selected-check">✓</div>
+        <span class="ev-emoji">🎭</span>
+        <div class="ev-name">Cultural Event</div>
+        <div class="ev-desc">Traditional ceremonies, temple festivals, cultural shows — heritage meets modern production.</div>
+        <div class="ev-price-from">Starting from ₹60,000</div>
+      </div>
+      <div class="event-card" data-event="gala" data-base="120000" onclick="selectEvent(this)">
+        <div class="selected-check">✓</div>
+        <span class="ev-emoji">✨</span>
+        <div class="ev-name">Gala / Award Night</div>
+        <div class="ev-desc">Black-tie galas, award ceremonies, fundraisers — luxurious events with elegant production.</div>
+        <div class="ev-price-from">Starting from ₹45,000</div>
+      </div>
+      <div class="event-card" data-event="concert" data-base="200000" onclick="selectEvent(this)">
+        <div class="selected-check">✓</div>
+        <span class="ev-emoji">🎤</span>
+        <div class="ev-name">Concert / Show</div>
+        <div class="ev-desc">Live concerts, DJ nights, entertainment shows — spectacular production for large audiences.</div>
+        <div class="ev-price-from">Starting from ₹55,000</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-next" id="nextBtn0" disabled onclick="goNext()"><span>Choose Theme →</span></button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 2: THEME ══ -->
+  <div class="step-panel" id="step1">
+    <div class="panel-header">
+      <div class="panel-tag">✦ Step 2 of 5</div>
+      <h1 class="panel-title">Pick your <em>perfect theme</em></h1>
+      <p class="panel-sub" id="themeSubText">Each theme includes its own colour palette, décor style, floral arrangements, and ambience.</p>
+    </div>
+    <div class="theme-grid" id="themeGrid"></div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goBack()"><span>← Back</span></button>
+      <button class="btn-next" id="nextBtn1" disabled onclick="goNext()"><span>Choose Package →</span></button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 3: PACKAGE ══ -->
+  <div class="step-panel" id="step2">
+    <div class="panel-header">
+      <div class="panel-tag">✦ Step 3 of 5</div>
+      <h1 class="panel-title">Select your <em>package</em></h1>
+      <p class="panel-sub">All packages include our signature planning service, on-day coordination, and post-event support.</p>
+    </div>
+    <div class="package-grid" id="packageGrid"></div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goBack()">← Back</button>
+      <button class="btn-next" id="nextBtn2" disabled onclick="goNext()"><span>Customise Add-ons →</span></button>
+    </div>
+  </div>
+
+  <!-- ══ STEP 4: ADD-ONS ══ -->
+  <div class="step-panel" id="step3">
+    <div class="panel-header">
+      <div class="panel-tag">✦ Step 4 of 5</div>
+      <h1 class="panel-title">Customise with <em>add-ons</em></h1>
+      <p class="panel-sub">Elevate your event with extra services. Select as many as you like!</p>
+    </div>
+    <div class="layout-with-sidebar">
+      <div>
+        <div class="addon-grid" id="addonGrid"></div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goBack()">← Back</button>
+          <button class="btn-next" onclick="goNext()"><span>Fill Booking Details →</span></button>
+        </div>
+      </div>
+      <div class="summary-card" id="summaryCard3">
+        <div class="summary-title">Price Summary</div>
+        <div id="summaryContent3"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 5: BOOKING FORM ══ -->
+  <div class="step-panel" id="step4">
+    <div class="panel-header">
+      <div class="panel-tag">✦ Step 5 of 5</div>
+      <h1 class="panel-title">Your <em>booking details</em></h1>
+      <p class="panel-sub">Almost there! Fill in your details and we'll confirm your booking within 24 hours.</p>
+    </div>
+    <div class="layout-with-sidebar">
+      <div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" class="form-input" id="fName" placeholder="Your full name" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" class="form-input" id="fPhone" placeholder="+91 98765 43210" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" class="form-input" id="fEmail" placeholder="you@email.com" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Number of Guests *</label>
+            <input type="number" class="form-input" id="fGuests" placeholder="e.g. 500" min="1" oninput="updateGuests(this.value)"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Event Date *</label>
+            <input type="date" class="form-input" id="fDate"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Event Venue</label>
+            <input type="text" class="form-input" id="fVenue" placeholder="Venue name or 'Help me find one'"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">City *</label>
+            <select class="form-select" id="fCity">
+              <option value="">Select City</option>
+              <option>Chennai</option>
+              <option>Coimbatore</option>
+              <option>Puducherry</option>
+              <option>Madurai</option>
+              <option>Salem</option>
+              <option>Bangalore</option>
+              <option>Mumbai</option>
+              <option>Delhi</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Budget Range</label>
+            <select class="form-select" id="fBudget">
+              <option value="">Select Range</option>
+              <option>Under ₹1 Lakh</option>
+              <option>₹1L – ₹3L</option>
+              <option>₹3L – ₹5L</option>
+              <option>₹5L – ₹8L</option>
+              <option>Above ₹10L</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Special Requests / Notes</label>
+            <textarea class="form-textarea" id="fNotes" rows="4" placeholder="Any special requirements, dietary needs, theme preferences, or anything you'd like us to know..."></textarea>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-back" onclick="goBack()">← Back</button>
+          <button class="btn-next" onclick="submitBooking()"><span>Review & Confirm →</span></button>
+        </div>
+      </div>
+      <div class="summary-card" id="summaryCard4">
+        <div class="summary-title">Price Summary</div>
+        <div id="summaryContent4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEP 6: CONFIRMATION ══ -->
+  <div class="step-panel" id="step5">
+    <div class="confirm-wrap">
+      <div class="confirm-icon">🎉</div>
+      <h1 class="confirm-title">Booking <em>Confirmed!</em></h1>
+      <p class="confirm-sub">Thank you! Our team will contact you within 24 hours to finalise all details. Your reference ID is:</p>
+      <div class="ref-id" id="refId">AURA-000000</div>
+      <div class="confirm-box" id="confirmBox"></div>
+      <p style="font-size:13px;color:var(--gray);margin-bottom:28px;font-weight:500;">A confirmation email has been sent to <span id="confirmEmail" style="color:var(--gold);font-weight:700;"></span></p>
+      <button class="btn-confirm" onclick="window.location.href='index.html'"><span>← Back to Home</span></button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const EVENTS = {
+  wedding:   {name:'Wedding',        emoji:'💍', cls:'theme-wedding'},
+  corporate: {name:'Corporate Event',emoji:'🏢', cls:'theme-corporate'},
+  birthday:  {name:'Birthday Party', emoji:'🎂', cls:'theme-birthday'},
+  cultural:  {name:'Cultural Event', emoji:'🎭', cls:'theme-cultural'},
+  gala:      {name:'Gala / Award Night',emoji:'✨',cls:'theme-gala'},
+  concert:   {name:'Concert / Show', emoji:'🎤', cls:'theme-concert'},
+};
+
+const THEMES = {
+  wedding:[
+    {id:'royal',    name:'Royal Classic',       sub:'Deep red, ivory & gold florals',      emoji:'🌹', bg:'linear-gradient(135deg,#7a3030,#a04545)'},
+    {id:'garden',   name:'Garden Romance',       sub:'Blush, sage green & baby florals',    emoji:'🌸', bg:'linear-gradient(135deg,#6d3545,#8d4a5a)'},
+    {id:'luxury',   name:'Luxury Minimalist',    sub:'All-white, crystal & modern blooms',  emoji:'🤍', bg:'linear-gradient(135deg,#d8cfc4,#e8e0d4)'},
+    {id:'vintage',  name:'Vintage Rustic',        sub:'Dried flowers, earthy tones & wood',  emoji:'🌾', bg:'linear-gradient(135deg,#8B6914,#A07820)'},
+    {id:'mehndi',   name:'Mehndi Celebration',   sub:'Marigold, turmeric & vibrant hues',   emoji:'🌼', bg:'linear-gradient(135deg,#B8860B,#DAA520)'},
+    {id:'beach',    name:'Destination / Beach',  sub:'Sea blues, corals & tropical leaves', emoji:'🌊', bg:'linear-gradient(135deg,#1a5276,#217dbb)'},
+  ],
+  corporate:[
+    {id:'modern',   name:'Modern Corporate',     sub:'Sleek white, navy & silver tones',    emoji:'💼', bg:'linear-gradient(135deg,#1a2a4a,#2c3e6e)'},
+    {id:'techy',    name:'Tech & Innovation',    sub:'Dark mode, neon blue & glass UI',     emoji:'⚡', bg:'linear-gradient(135deg,#0a1628,#1a2e4a)'},
+    {id:'eco',      name:'Eco / Green Summit',   sub:'Biophilic, plants & natural tones',   emoji:'🌿', bg:'linear-gradient(135deg,#1a3a1a,#2a5a2a)'},
+    {id:'luxury_c', name:'Executive Gala',       sub:'Black tie, gold & leather textures',  emoji:'🥂', bg:'linear-gradient(135deg,#4a3800,#6a5000)'},
+  ],
+  birthday:[
+    {id:'glam',     name:'Glam & Gold',          sub:'Balloons, gold glitter & neon signs', emoji:'🎊', bg:'linear-gradient(135deg,#7a4500,#a05c00)'},
+    {id:'pastel',   name:'Pastel Dreamland',     sub:'Soft pinks, mints & fairy lights',   emoji:'🦄', bg:'linear-gradient(135deg,#7a2060,#a03080)'},
+    {id:'retro',    name:'Retro 90s Party',       sub:'Bright neons, funky patterns & games',emoji:'🕹️',bg:'linear-gradient(135deg,#3a0066,#5a0099)'},
+    {id:'garden_b', name:'Garden Tea Party',     sub:'Florals, pastel linen & vintage tea', emoji:'🫖', bg:'linear-gradient(135deg,#2a4a10,#3a6418)'},
+    {id:'dark_b',   name:'Dark & Mysterious',    sub:'Deep jewel tones & moody elegance',   emoji:'🖤', bg:'linear-gradient(135deg,#2a1a0a,#3a2a1a)'},
+  ],
+  cultural:[
+    {id:'classical',name:'Classical Tamil',      sub:'Kolam, banana leaves & temple décor', emoji:'🏛️', bg:'linear-gradient(135deg,#8B2500,#B83000)'},
+    {id:'navratri', name:'Navratri Celebration', sub:'9 colors, garba floor & folk art',    emoji:'🎪', bg:'linear-gradient(135deg,#6a0050,#8a0070)'},
+    {id:'pongal',   name:'Pongal Festival',      sub:'Sugarcane, kolam & rustic earthware', emoji:'🌾', bg:'linear-gradient(135deg,#6a4a00,#8a6200)'},
+    {id:'temple',   name:'Temple Festival',      sub:'Marigold, lights & traditional décor',emoji:'🙏', bg:'linear-gradient(135deg,#8B3000,#b04000)'},
+  ],
+  gala:[
+    {id:'blacktie', name:'Black Tie Classic',    sub:'Tuxedo noir, candlelight & crystal',  emoji:'🎩', bg:'linear-gradient(135deg,#2a2a2a,#3a3a3a)'},
+    {id:'masq',     name:'Masquerade Ball',      sub:'Venetian masks, purple & gold mystery',emoji:'🎭', bg:'linear-gradient(135deg,#3a0060,#5a0090)'},
+    {id:'art_deco', name:'Art Deco Glamour',     sub:'Gold geometry, feathers & champagne', emoji:'🥂', bg:'linear-gradient(135deg,#5a4a00,#7a6200)'},
+  ],
+  concert:[
+    {id:'festival', name:'Music Festival',       sub:'Stage, LED walls & crowd energy',     emoji:'🎸', bg:'linear-gradient(135deg,#1a0040,#2a0060)'},
+    {id:'dj',       name:'DJ Night / Rave',      sub:'Strobe lights, fog & bass culture',   emoji:'🎛️', bg:'linear-gradient(135deg,#000830,#001050)'},
+    {id:'acoustic', name:'Acoustic Evening',     sub:'Warm stage, intimate & refined',      emoji:'🎵', bg:'linear-gradient(135deg,#4a2800,#6a3800)'},
+  ],
+};
+
+const PACKAGES = {
+  wedding:[
+    {id:'silver', name:'Silver',    mult:1.0, badge:'',         highlight:false, features:['Venue decoration','Basic floral arrangements','Catering for 100 guests','Photography (4hr)','Basic lighting setup','Event coordinator']},
+    {id:'gold',   name:'Gold',      mult:1.8, badge:'Most Popular', highlight:true, features:['Premium venue décor','Luxury floral design','Catering for 200 guests','Photo + Video (full day)','Premium lighting & DJ','2 Coordinators','Mehendi & Sangeet setup','Bridal suite decor']},
+    {id:'plat',   name:'Platinum',  mult:3.2, badge:'',         highlight:false, features:['Custom theme design','Exotic florals & imported decor','Unlimited guests catering','Cinematic photo+video','Stage + LED backdrop','Dedicated team of 10','5-star accommodation tie-up','Pre/post event coverage']},
+  ],
+  corporate:[
+    {id:'basic',  name:'Basic',     mult:1.0, badge:'',         highlight:false, features:['Venue setup','AV equipment','Catering for 50 guests','Basic branding','1 Coordinator']},
+    {id:'pro',    name:'Pro',       mult:1.9, badge:'Recommended', highlight:true, features:['Full venue branding','Stage + LED backdrop','Catering for 150 guests','Live streaming setup','Photography+Video','2 Coordinators','Welcome lounge']},
+    {id:'exec',   name:'Executive', mult:3.0, badge:'',         highlight:false, features:['Custom stage design','Multi-room setup','Unlimited catering','Full production crew','Valet parking','Media coverage','Post-event highlights reel']},
+  ],
+  birthday:[
+    {id:'fun',    name:'Fun Pack',  mult:1.0, badge:'',         highlight:false, features:['Themed décor','Birthday cake (2 tier)','Balloon setup','Photography (2hr)','Games & entertainment']},
+    {id:'glam',   name:'Glamour',   mult:2.0, badge:'Fan Favourite', highlight:true, features:['Full themed transformation','Custom 4-tier cake','Photo booth with props','DJ + dance floor','Surprise entry setup','Catering for 50 guests']},
+    {id:'mega',   name:'Mega Bash', mult:3.5, badge:'',         highlight:false, features:['End-to-end theme design','Celeb chef catering','Live band or DJ','Fireworks display','Drone video coverage','Personalised return gifts']},
+  ],
+  cultural:[
+    {id:'trad',   name:'Traditional',mult:1.0,badge:'',         highlight:false, features:['Traditional décor','Puja setup','Catering (vegetarian)','1 Coordinator']},
+    {id:'grand',  name:'Grand',      mult:1.8,badge:'Popular',  highlight:true, features:['Elaborate kolam & décor','Cultural performances','Feast catering for 200','Photography & video','Sound system']},
+    {id:'royal_c',name:'Royal',      mult:3.0,badge:'',         highlight:false, features:['Royal traditional theme','Live nadaswaram & performances','Unlimited feast','Cinematography','VIP seating','Temple priest coordination']},
+  ],
+  gala:[
+    {id:'eve',    name:'Evening',   mult:1.0, badge:'',         highlight:false, features:['Formal venue setup','3-course dinner','Award stage','Photography']},
+    {id:'gala2',  name:'Grand Gala',mult:1.8, badge:'Top Pick', highlight:true, features:['Black tie setup','5-course dinner','LED stage backdrop','Live entertainment','Videography','Red carpet arrival']},
+    {id:'prem',   name:'Premiere',  mult:3.2, badge:'',         highlight:false, features:['Custom award stage','Celebrity host option','Michelin-style dining','Full production crew','Media coverage','Custom trophies']},
+  ],
+  concert:[
+    {id:'small',  name:'Intimate',  mult:1.0, badge:'',         highlight:false, features:['Stage setup','PA system','Basic lighting rig','Sound engineer']},
+    {id:'mid',    name:'Main Stage',mult:1.7, badge:'Most Booked',highlight:true, features:['Professional stage','LED wall backdrop','Full PA + monitors','Lighting designer','Crowd barriers','Ticketing support']},
+    {id:'mega_c', name:'Festival',  mult:3.5, badge:'',         highlight:false, features:['Multi-stage setup','Giant LED screens','Full production crew','VIP zones','Security team','Live streaming','Media partners']},
+  ],
+};
+
+const ADDONS = [
+  {id:'photo',     name:'Extra Photographer',  price:14000, emoji:'📸'},
+  {id:'drone',     name:'Drone Videography',   price:13000, emoji:'🚁'},
+  {id:'photobooth',name:'Photo Booth',          price:8000,  emoji:'🤳'},
+  {id:'fireworks', name:'Fireworks Display',    price:30000, emoji:'🎆'},
+  {id:'liveband',  name:'Live Band (3hr)',       price:25000, emoji:'🎸'},
+  {id:'floral+',   name:'Premium Florals',       price:18000, emoji:'🌺'},
+  {id:'catering+', name:'Extra Catering (50)',   price:9000, emoji:'🍽️'},
+  {id:'transport', name:'Guest Transport',       price:11000, emoji:'🚌'},
+  {id:'decor+',    name:'Luxury Décor Upgrade',  price:22000, emoji:'✨'},
+  {id:'anchor',    name:'Professional Anchor/MC',price:12000, emoji:'🎤'},
+  {id:'kids',      name:'Kids Entertainment',    price:6000,  emoji:'🎠'},
+  {id:'honeymoon', name:'Honeymoon Setup',       price:10000, emoji:'🌹'},
+];
+
+let state = {
+  step:0, event:null, eventName:'', eventEmoji:'', basePrice:0,
+  theme:null, themeName:'', package:null, packageName:'', packagePrice:0,
+  addons:[], addonTotal:0, guestMultiplier:1, form:{},
+};
+
+function totalPrice() { return Math.round((state.packagePrice + state.addonTotal) * state.guestMultiplier); }
+
+function showStep(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step' + n).classList.add('active');
+  document.querySelectorAll('.progress-step').forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    if (i < n) s.classList.add('done');
+    if (i === n) s.classList.add('active');
+  });
+  state.step = n;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function goNext() { showStep(state.step + 1); }
+function goBack() { showStep(state.step - 1); }
+function jumpStep(n) { if (n <= state.step) showStep(n); }
+
+function selectEvent(card) {
+  document.querySelectorAll('.event-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  state.event = card.dataset.event;
+  state.basePrice = parseInt(card.dataset.base);
+  state.eventName = EVENTS[state.event].name;
+  state.eventEmoji = EVENTS[state.event].emoji;
+  document.body.className = EVENTS[state.event].cls;
+  document.getElementById('nextBtn0').disabled = false;
+  buildThemeGrid();
+}
+
+function buildThemeGrid() {
+  const grid = document.getElementById('themeGrid');
+  const themes = THEMES[state.event] || [];
+  grid.innerHTML = themes.map(t => `
+    <div class="theme-card" data-theme="${t.id}" data-name="${t.name}" onclick="selectTheme(this)">
+      <div class="theme-sel-badge">Selected ✓</div>
+      <div class="theme-preview" style="background:${t.bg}">${t.emoji}</div>
+      <div class="theme-info">
+        <div class="theme-name">${t.name}</div>
+        <div class="theme-sub">${t.sub}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectTheme(card) {
+  document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  state.theme = card.dataset.theme;
+  state.themeName = card.dataset.name;
+  document.getElementById('nextBtn1').disabled = false;
+  buildPackageGrid();
+}
+
+function buildPackageGrid() {
+  const grid = document.getElementById('packageGrid');
+  const pkgs = PACKAGES[state.event] || [];
+  grid.innerHTML = pkgs.map(p => {
+    const price = Math.round(state.basePrice * p.mult);
+    return `
+      <div class="pkg-card${p.highlight?' featured':''}" data-pkg="${p.id}" data-price="${price}" data-name="${p.name}" onclick="selectPackage(this)">
+        ${p.badge ? `<div class="pkg-badge">${p.badge}</div>` : ''}
+        <div class="pkg-sel-glow"></div>
+        <div class="pkg-name">${p.name}</div>
+        <div class="pkg-price">₹${price.toLocaleString('en-IN')} <span>/ base</span></div>
+        <ul class="pkg-features">
+          ${p.features.map(f => `<li>${f}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectPackage(card) {
+  document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+  state.package = card.dataset.pkg;
+  state.packageName = card.dataset.name;
+  state.packagePrice = parseInt(card.dataset.price);
+  state.addonTotal = 0;
+  state.addons = [];
+  document.getElementById('nextBtn2').disabled = false;
+  buildAddonGrid();
+}
+
+function buildAddonGrid() {
+  const grid = document.getElementById('addonGrid');
+  grid.innerHTML = ADDONS.map(a => `
+    <div class="addon-card" data-id="${a.id}" data-price="${a.price}" data-name="${a.name}" onclick="toggleAddon(this)">
+      <div class="addon-icon">${a.emoji}</div>
+      <div class="addon-info">
+        <div class="addon-name">${a.name}</div>
+        <div class="addon-price">+₹${a.price.toLocaleString('en-IN')}</div>
+      </div>
+      <div class="addon-check">✓</div>
+    </div>
+  `).join('');
+  renderSummary('summaryContent3');
+}
+
+function toggleAddon(card) {
+  const id = card.dataset.id;
+  const price = parseInt(card.dataset.price);
+  const name = card.dataset.name;
+  if (card.classList.contains('selected')) {
+    card.classList.remove('selected');
+    state.addons = state.addons.filter(a => a.id !== id);
+    state.addonTotal -= price;
+  } else {
+    card.classList.add('selected');
+    state.addons.push({id, name, price});
+    state.addonTotal += price;
+  }
+  renderSummary('summaryContent3');
+}
+
+function renderSummary(containerId) {
+  const el = document.getElementById(containerId);
+  if (!state.event) { el.innerHTML = '<p class="summary-empty">Select an event to see pricing</p>'; return; }
+  let html = `
+    <div class="summary-event-chip">${state.eventEmoji} ${state.eventName}${state.themeName ? ' · ' + state.themeName : ''}</div>
+    <div class="summary-line"><span class="lbl">${state.packageName || 'Package'}</span><span class="val">₹${state.packagePrice.toLocaleString('en-IN')}</span></div>
+  `;
+  if (state.addons.length) {
+    html += '<hr class="summary-divider"/>';
+    state.addons.forEach(a => {
+      html += `<div class="summary-line"><span class="lbl">${a.name}</span><span class="val">+₹${a.price.toLocaleString('en-IN')}</span></div>`;
+    });
+  }
+  if (state.guestMultiplier > 1) {
+    html += `<div class="summary-line"><span class="lbl">Guest scale (${state.guestMultiplier}x)</span><span class="val">×${state.guestMultiplier}</span></div>`;
+  }
+  html += `
+    <div class="summary-total">
+      <span class="lbl">Total Estimate</span>
+      <span class="val">₹${totalPrice().toLocaleString('en-IN')}</span>
+    </div>
+    <p style="font-size:10px;color:var(--gray);margin-top:10px;line-height:1.6;font-weight:500;">*Final price confirmed after consultation. GST additional.</p>
+  `;
+  el.innerHTML = html;
+}
+
+function updateGuests(val) {
+  const g = parseInt(val) || 0;
+  if (g <= 100) state.guestMultiplier = 1;
+  else if (g <= 200) state.guestMultiplier = 1.5;
+  else if (g <= 400) state.guestMultiplier = 1.8;
+  else if (g <= 700) state.guestMultiplier = 2.0;
+  else state.guestMultiplier = 2.5;
+  renderSummary('summaryContent4');
+}
+
+async function submitBooking() {
+  const name  = document.getElementById('fName').value.trim();
+  const phone = document.getElementById('fPhone').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  const date  = document.getElementById('fDate').value;
+  const city  = document.getElementById('fCity').value;
+  if (!name || !phone || !email || !date || !city) {
+    alert('Please fill in all required fields (*)');
+    return;
+  }
+  state.form = { name, phone, email, date, city,
+    venue:  document.getElementById('fVenue').value,
+    guests: document.getElementById('fGuests').value,
+    budget: document.getElementById('fBudget').value,
+    notes:  document.getElementById('fNotes').value,
+  };
+
+  // Save to database
+  try {
+    const payload = {
+      name,
+      email,
+      phone,
+      event_type: state.eventName || 'General',
+      theme: state.themeName || '',
+      package: state.packageName || '',
+      guests: parseInt(state.form.guests) || 0,
+      event_date: date,
+      city,
+      amount: totalPrice(),
+      notes: state.form.notes || '',
+    };
+    const res = await fetch('http://127.0.0.1:8000/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const saved = await res.json();
+    state.bookingId = saved.booking_id;
+  } catch(err) {
+    console.warn('Backend offline — showing confirmation anyway');
+    state.bookingId = 'AURA-' + Math.floor(100000 + Math.random() * 900000);
+  }
+
+  buildConfirmation();
+  showStep(5);
+}
+
+function buildConfirmation() {
+  const f = state.form;
+  const refId = state.bookingId || ('AURA-' + Math.floor(100000 + Math.random() * 900000));
+  document.getElementById('refId').textContent = refId;
+  document.getElementById('confirmEmail').textContent = f.email;
+  window._auraBookedEvent = state.eventName || 'Aura Events';
+  setTimeout(() => openReview(f.name), 2500);
+  const addonsStr = state.addons.length ? state.addons.map(a=>a.name).join(', ') : 'None';
+  const dateFormatted = f.date ? new Date(f.date).toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'}) : '—';
+  document.getElementById('confirmBox').innerHTML = `
+    <div class="confirm-row"><span class="lk">Client</span><span class="vl">${f.name}</span></div>
+    <div class="confirm-row"><span class="lk">Phone</span><span class="vl">${f.phone}</span></div>
+    <div class="confirm-row"><span class="lk">Event Type</span><span class="vl">${state.eventEmoji} ${state.eventName}</span></div>
+    <div class="confirm-row"><span class="lk">Theme</span><span class="vl">${state.themeName}</span></div>
+    <div class="confirm-row"><span class="lk">Package</span><span class="vl">${state.packageName}</span></div>
+    <div class="confirm-row"><span class="lk">Add-ons</span><span class="vl">${addonsStr}</span></div>
+    <div class="confirm-row"><span class="lk">Guests</span><span class="vl">${f.guests || '—'}</span></div>
+    <div class="confirm-row"><span class="lk">Event Date</span><span class="vl">${dateFormatted}</span></div>
+    <div class="confirm-row"><span class="lk">City</span><span class="vl">${f.city}</span></div>
+    <div class="confirm-total">
+      <span class="lk">Total Estimate</span>
+      <span class="vl">₹${totalPrice().toLocaleString('en-IN')}</span>
+    </div>
+  `;
+}
+
+const observer = new MutationObserver(() => {
+  if (document.getElementById('step3').classList.contains('active')) renderSummary('summaryContent3');
+  if (document.getElementById('step4').classList.contains('active')) renderSummary('summaryContent4');
+});
+observer.observe(document.getElementById('step3'), {attributes:true,attributeFilter:['class']});
+observer.observe(document.getElementById('step4'), {attributes:true,attributeFilter:['class']});
+
+buildThemeGrid();
+</script>
+
+<!-- AI CHATBOT -->
+<style>
+/* ===== AI CHATBOT ===== */
+.ai-chat-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  background: var(--gold);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 20px rgba(201,169,110,0.4);
+  z-index: 1000;
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(201,169,110,0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(201,169,110,0); }
+  100% { box-shadow: 0 0 0 0 rgba(201,169,110,0); }
+}
+.ai-chat-btn:hover { transform: scale(1.1); background: var(--gold-dark); }
+
+.ai-panel {
+  position: fixed;
+  bottom: 96px;
+  right: 28px;
+  width: 340px;
+  height: 480px;
+  background: #0e0e0e;
+  border: 1px solid rgba(201,169,110,0.25);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.ai-panel.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+.ai-panel-head {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(201,169,110,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 12px 12px 0 0;
+  background: rgba(201,169,110,0.08);
+}
+.ai-panel-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ai-close {
+  background: transparent;
+  border: none;
+  color: #666;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 2px 6px;
+  transition: color 0.2s;
+}
+.ai-close:hover { color: #fff; }
+
+.ai-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ai-messages::-webkit-scrollbar { width: 3px; }
+.ai-messages::-webkit-scrollbar-thumb { background: rgba(201,169,110,0.3); border-radius: 2px; }
+
+.ai-msg {
+  max-width: 85%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ai-msg.bot {
+  background: rgba(201,169,110,0.1);
+  border: 1px solid rgba(201,169,110,0.15);
+  color: #e0e0e0;
+  align-self: flex-start;
+}
+.ai-msg.user {
+  background: var(--gold);
+  color: #000;
+  align-self: flex-end;
+  font-weight: 500;
+}
+.ai-msg.typing {
+  background: rgba(201,169,110,0.1);
+  border: 1px solid rgba(201,169,110,0.15);
+  align-self: flex-start;
+  color: var(--gold);
+}
+
+.ai-quick-btns {
+  padding: 8px 14px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.04);
+}
+.ai-quick-btn {
+  background: rgba(201,169,110,0.08);
+  border: 1px solid rgba(201,169,110,0.2);
+  color: var(--gold);
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.ai-quick-btn:hover { background: rgba(201,169,110,0.2); }
+
+.ai-input-row {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  gap: 8px;
+  border-radius: 0 0 12px 12px;
+}
+.ai-input {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #fff;
+  padding: 9px 14px;
+  font-size: 13px;
+  border-radius: 6px;
+  outline: none;
+  font-family: var(--font-body);
+  transition: border 0.2s;
+}
+.ai-input:focus { border-color: rgba(201,169,110,0.4); }
+.ai-input::placeholder { color: #555; }
+.ai-send {
+  background: var(--gold);
+  border: none;
+  color: #000;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.ai-send:hover { background: var(--gold-dark); }
+
+@media(max-width:480px) {
+  .ai-panel { width: calc(100vw - 32px); right: 16px; bottom: 88px; }
+  .ai-chat-btn { right: 16px; bottom: 20px; }
+}
+</style>
+
+<!-- Chatbot Button -->
+<button class="ai-chat-btn" id="aiChatBtn" title="Chat with AI">✦</button>
+
+<!-- Chatbot Panel -->
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-panel-head">
+    <div class="ai-panel-title">✦ Aura AI Assistant</div>
+    <button class="ai-close" id="aiClose">✕</button>
+  </div>
+  <div class="ai-messages" id="aiMessages">
+    <div class="ai-msg bot">Hi! 👋 I'm Aura's AI assistant. I can help you with event planning, theme suggestions, and pricing. What would you like to know?</div>
+  </div>
+  <div class="ai-quick-btns">
+    <button class="ai-quick-btn" onclick="sendQuick('What themes do you have?')">🎨 Themes</button>
+    <button class="ai-quick-btn" onclick="sendQuick('What are your packages and pricing?')">💰 Pricing</button>
+    <button class="ai-quick-btn" onclick="sendQuick('Suggest a theme for my wedding')">💍 Wedding</button>
+    <button class="ai-quick-btn" onclick="sendQuick('What cities do you serve?')">📍 Cities</button>
+  </div>
+  <div class="ai-input-row">
+    <input class="ai-input" id="aiInput" placeholder="Ask anything..." type="text"/>
+    <button class="ai-send" id="aiSend">➤</button>
+  </div>
+</div>
+
+<script>
+// ===== AI CHATBOT =====
+const aiChatBtn = document.getElementById('aiChatBtn');
+const aiPanel = document.getElementById('aiPanel');
+const aiClose = document.getElementById('aiClose');
+const aiMessages = document.getElementById('aiMessages');
+const aiInput = document.getElementById('aiInput');
+const aiSend = document.getElementById('aiSend');
+
+let chatHistory = [];
+
+aiChatBtn.addEventListener('click', () => {
+  aiPanel.classList.toggle('open');
+  if (aiPanel.classList.contains('open')) {
+    aiInput.focus();
+  }
+});
+
+aiClose.addEventListener('click', () => {
+  aiPanel.classList.remove('open');
+});
+
+aiInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') sendMessage();
+});
+
+aiSend.addEventListener('click', sendMessage);
+
+function sendQuick(msg) {
+  aiInput.value = msg;
+  sendMessage();
+}
+
+function addMessage(text, type) {
+  const div = document.createElement('div');
+  div.className = `ai-msg ${type}`;
+  div.textContent = text;
+  aiMessages.appendChild(div);
+  aiMessages.scrollTop = aiMessages.scrollHeight;
+  return div;
+}
+
+async function sendMessage() {
+  const msg = aiInput.value.trim();
+  if (!msg) return;
+
+  aiInput.value = '';
+  addMessage(msg, 'user');
+  
+  const typing = addMessage('✦ Thinking...', 'typing');
+  aiSend.disabled = true;
+
+  try {
+    const res = await fetch('http://127.0.0.1:8000/ai/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: msg, history: chatHistory })
+    });
+    const data = await res.json();
+    typing.remove();
+    addMessage(data.response, 'bot');
+    
+    chatHistory.push({ role: 'user', content: msg });
+    chatHistory.push({ role: 'assistant', content: data.response });
+    if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+
+  } catch(err) {
+    typing.remove();
+    addMessage('Sorry, AI is offline right now. Please try again! 🙏', 'bot');
+  }
+  
+  aiSend.disabled = false;
+  aiInput.focus();
+}
+</script>
+
+<!-- ── Review Modal ── -->
+<div class="review-overlay" id="reviewOverlay">
+  <div class="review-modal">
+    <button class="review-close" onclick="closeReview()">✕</button>
+    <div id="reviewFormWrap">
+      <div class="review-header">
+        <div class="r-icon">⭐</div>
+        <h2>How was your <em>experience?</em></h2>
+        <p>Takes only 30 seconds — your feedback means a lot to us!</p>
+      </div>
+      <div class="star-row-r" id="rStars">
+        <span class="r-star" data-v="1">★</span>
+        <span class="r-star" data-v="2">★</span>
+        <span class="r-star" data-v="3">★</span>
+        <span class="r-star" data-v="4">★</span>
+        <span class="r-star" data-v="5">★</span>
+      </div>
+      <div class="star-label-r" id="rStarLabel">Tap a star to rate</div>
+      <div class="r-form-group">
+        <label>Your name</label>
+        <input type="text" id="rName" placeholder="e.g. Kavinnee"/>
+      </div>
+      <div class="r-form-group">
+        <label>Your review</label>
+        <textarea id="rComment" placeholder="Tell us what you loved about our service..."></textarea>
+      </div>
+      <button class="r-submit-btn" onclick="submitReview()">Submit Review ✦</button>
+      <span class="r-skip" onclick="closeReview()">Skip for now</span>
+    </div>
+    <div class="r-success" id="reviewSuccess">
+      <div class="s-icon">🙏</div>
+      <h3>Thank you so much!</h3>
+      <p>Your review has been submitted.<br/>We truly appreciate your kind words.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+let rRating = 0;
+const rLabels = ['','Poor 😕','Okay 😐','Good 😊','Great 😄','Amazing! 🤩'];
+
+document.querySelectorAll('.r-star').forEach(s => {
+  s.addEventListener('mouseover', () => highlightStars(+s.dataset.v));
+  s.addEventListener('mouseleave', () => highlightStars(rRating));
+  s.addEventListener('click', () => {
+    rRating = +s.dataset.v;
+    highlightStars(rRating);
+    document.getElementById('rStarLabel').textContent = rLabels[rRating];
+  });
+});
+
+function highlightStars(n){
+  document.querySelectorAll('.r-star').forEach(s => {
+    s.classList.toggle('lit', +s.dataset.v <= n);
+  });
+}
+
+function openReview(name){
+  if(name) document.getElementById('rName').value = name;
+  document.getElementById('reviewOverlay').classList.add('open');
+}
+
+function closeReview(){
+  document.getElementById('reviewOverlay').classList.remove('open');
+}
+
+async function submitReview(){
+  if(!rRating){ alert('Please select a star rating! ⭐'); return; }
+  const name    = document.getElementById('rName').value.trim() || 'Anonymous';
+  const comment = document.getElementById('rComment').value.trim();
+  const eventName = window._auraBookedEvent || 'Aura Events';
+  
+  const payload = {
+    name: name,
+    rating: rRating,
+    comment: comment,
+    event_type: eventName,
+    booking_id: window._auraBookingId || '',
+    email: window._auraBookingEmail || ''
+  };
+  
+  console.log('Submitting review:', payload);
+  
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/reviews', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    console.log('Review saved:', data);
+  } catch(e){ 
+    console.warn('Review save failed:', e); 
+  }
+  
+  document.getElementById('reviewFormWrap').style.display = 'none';
+  document.getElementById('reviewSuccess').style.display  = 'block';
+  setTimeout(() => closeReview(), 2800);
+}
+</script>
+</body>
+</html>

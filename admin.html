@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aura Events — Admin Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=DM+Sans:wght@400;500;700;800&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --brown:#8b5e3c;
+  --brown-d:#6f472a;
+  --brown-l:#c8a27d;
+  --cream:#f8f4ee;
+  --cream-2:#f1e8dc;
+  --white:#ffffff;
+  --text:#2f2219;
+  --text-soft:#6d5848;
+  --line:#e7d9ca;
+  --green:#4caf50;
+  --red:#e25555;
+  --amber:#d9942b;
+  --blue:#3b82f6;
+  --purple:#9b59b6;
+  --font-d:'Bebas Neue',sans-serif;
+  --font-s:'Cormorant Garamond',serif;
+  --font-b:'DM Sans',sans-serif;
+  --tr:all .28s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{
+  height:100%;
+  background:linear-gradient(135deg,var(--cream) 0%,#fbf8f3 55%,var(--cream-2) 100%);
+  color:var(--text);
+  font-family:var(--font-b);
+  overflow:hidden;
+}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-thumb{background:rgba(139,94,60,.28);border-radius:10px;}
+.app{display:flex;height:100vh;}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;
+  flex-shrink:0;
+  background:linear-gradient(180deg,#fffdfb 0%,#f6ede2 100%);
+  border-right:1px solid var(--line);
+  display:flex;
+  flex-direction:column;
+  box-shadow:4px 0 24px rgba(111,71,42,.06);
+}
+.sb-logo{padding:22px 16px 16px;border-bottom:1px solid var(--line);}
+.logo-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.logo-star{color:var(--brown);font-size:15px;animation:spin 8s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.logo-txt{font-family:var(--font-d);font-size:18px;letter-spacing:.12em;color:var(--text);}
+.logo-sub{font-size:10px;color:var(--text-soft);letter-spacing:.18em;text-transform:uppercase;font-weight:700;}
+.sb-nav{flex:1;padding:12px 10px;overflow-y:auto;}
+.nav-section{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  color:rgba(47,34,25,.45);
+  padding:10px 8px 6px;
+  font-weight:800;
+}
+.nav-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:11px 12px;
+  cursor:pointer;
+  border-radius:10px;
+  margin-bottom:4px;
+  transition:var(--tr);
+  font-size:13px;
+  color:var(--text-soft);
+  border:1px solid transparent;
+  font-weight:700;
+}
+.nav-item:hover{
+  background:rgba(139,94,60,.08);
+  color:var(--brown-d);
+  border-color:rgba(139,94,60,.14);
+}
+.nav-item.active{
+  background:linear-gradient(90deg,rgba(139,94,60,.14),rgba(200,162,125,.18));
+  color:var(--brown-d);
+  border-color:rgba(139,94,60,.25);
+}
+.nav-icon{font-size:15px;flex-shrink:0;}
+.nav-badge{
+  margin-left:auto;
+  background:var(--brown);
+  color:#fff;
+  font-size:9px;
+  font-weight:800;
+  padding:2px 7px;
+  border-radius:999px;
+}
+.sb-footer{padding:12px 10px;border-top:1px solid var(--line);}
+.sb-footer a{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:12px;
+  color:var(--text-soft);
+  text-decoration:none;
+  padding:8px 10px;
+  transition:var(--tr);
+  font-weight:700;
+}
+.sb-footer a:hover{color:var(--brown);}
+
+/* MAIN */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.topbar{
+  padding:16px 24px;
+  background:rgba(255,255,255,.84);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-shrink:0;
+}
+.page-title{
+  font-family:var(--font-s);
+  font-size:1.55rem;
+  font-weight:600;
+  color:var(--text);
+}
+.page-title em{color:var(--brown);font-style:italic;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.search-box{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--white);
+  border:1px solid var(--line);
+  padding:9px 14px;
+  font-size:13px;
+  border-radius:12px;
+  box-shadow:0 6px 16px rgba(111,71,42,.05);
+}
+.search-box input{
+  background:transparent;
+  border:none;
+  outline:none;
+  color:var(--text);
+  font-family:var(--font-b);
+  font-size:13px;
+  width:180px;
+  font-weight:700;
+}
+.search-box input::placeholder{color:rgba(47,34,25,.35);}
+.topbar-btn{
+  background:var(--brown);
+  border:1px solid var(--brown);
+  color:#fff;
+  padding:9px 16px;
+  font-size:12px;
+  font-family:var(--font-b);
+  cursor:pointer;
+  letter-spacing:.06em;
+  transition:var(--tr);
+  border-radius:10px;
+  font-weight:800;
+}
+.topbar-btn:hover{background:var(--brown-d);border-color:var(--brown-d);}
+.content{flex:1;overflow-y:auto;padding:20px 24px;}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+.stat-card{
+  background:var(--white);
+  border:1px solid var(--line);
+  padding:18px 20px;
+  position:relative;
+  overflow:hidden;
+  transition:var(--tr);
+  border-radius:16px;
+  box-shadow:0 10px 24px rgba(111,71,42,.06);
+}
+.stat-card:hover{border-color:rgba(139,94,60,.25);transform:translateY(-3px);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+.stat-card.gold::before{background:var(--brown);}
+.stat-card.green::before{background:var(--green);}
+.stat-card.amber::before{background:var(--amber);}
+.stat-card.blue::before{background:var(--blue);}
+.stat-label{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--text-soft);
+  margin-bottom:8px;
+  font-weight:800;
+}
+.stat-val{
+  font-family:var(--font-d);
+  font-size:2rem;
+  line-height:1;
+  margin-bottom:5px;
+  letter-spacing:.03em;
+}
+.stat-card.gold .stat-val{color:var(--brown);}
+.stat-card.green .stat-val{color:var(--green);}
+.stat-card.amber .stat-val{color:var(--amber);}
+.stat-card.blue .stat-val{color:var(--blue);}
+.stat-sub{font-size:11px;color:var(--text-soft);font-weight:700;}
+.stat-icon{position:absolute;bottom:12px;right:14px;font-size:28px;opacity:.15;}
+
+/* TWO COL */
+.two-col{display:grid;grid-template-columns:1fr 340px;gap:14px;margin-bottom:20px;}
+
+/* SECTION CARD */
+.section-card{
+  background:rgba(255,255,255,.92);
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 12px 26px rgba(111,71,42,.06);
+}
+.section-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:15px 18px;
+  border-bottom:1px solid #efe3d6;
+  background:linear-gradient(180deg,#fffdfb 0%,#faf4ed 100%);
+}
+.section-title{
+  font-family:var(--font-d);
+  font-size:1.05rem;
+  letter-spacing:.12em;
+  color:var(--brown-d);
+}
+.section-action{
+  font-size:11px;
+  color:var(--brown);
+  cursor:pointer;
+  background:transparent;
+  border:none;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-weight:800;
+}
+
+/* TABLE */
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;}
+thead th{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.14em;
+  color:var(--text-soft);
+  padding:12px 16px;
+  text-align:left;
+  border-bottom:1px solid #efe3d6;
+  white-space:nowrap;
+  font-weight:800;
+}
+tbody tr{
+  border-bottom:1px solid rgba(111,71,42,.08);
+  transition:var(--tr);
+  cursor:pointer;
+}
+tbody tr:hover{background:rgba(139,94,60,.05);}
+tbody td{
+  padding:13px 16px;
+  font-size:13px;
+  color:var(--text);
+  white-space:nowrap;
+  font-weight:700;
+}
+.client-cell{display:flex;align-items:center;gap:10px;}
+.client-avatar{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:var(--font-d);
+  font-size:13px;
+  flex-shrink:0;
+}
+.client-name{font-weight:800;color:var(--text);}
+.client-phone{font-size:11px;color:var(--text-soft);font-weight:600;}
+.event-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-size:11px;
+  padding:5px 10px;
+  border-radius:999px;
+  background:rgba(139,94,60,.08);
+  border:1px solid rgba(139,94,60,.12);
+  color:var(--brown-d);
+  font-weight:800;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:5px 10px;
+  border-radius:999px;
+}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;}
+.badge.pending{background:rgba(217,148,43,.12);color:var(--amber);border:1px solid rgba(217,148,43,.22);}
+.badge.pending::before{background:var(--amber);}
+.badge.confirmed{background:rgba(59,130,246,.1);color:var(--blue);border:1px solid rgba(59,130,246,.18);}
+.badge.confirmed::before{background:var(--blue);}
+.badge.completed{background:rgba(76,175,80,.1);color:var(--green);border:1px solid rgba(76,175,80,.2);}
+.badge.completed::before{background:var(--green);}
+.badge.cancelled{background:rgba(226,85,85,.1);color:var(--red);border:1px solid rgba(226,85,85,.2);}
+.badge.cancelled::before{background:var(--red);}
+.amt{color:var(--brown);font-weight:800;}
+.action-btn{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--brown-d);
+  padding:6px 11px;
+  font-size:11px;
+  cursor:pointer;
+  transition:var(--tr);
+  font-family:var(--font-b);
+  border-radius:8px;
+  font-weight:800;
+}
+.action-btn:hover{border-color:var(--brown);color:var(--brown);background:#fcf6ef;}
+
+/* UPCOMING EVENTS */
+.upcoming-list{padding:8px 0;}
+.upcoming-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 18px;
+  border-bottom:1px solid rgba(111,71,42,.08);
+  transition:var(--tr);
+  cursor:pointer;
+}
+.upcoming-item:last-child{border-bottom:none;}
+.upcoming-item:hover{background:rgba(139,94,60,.05);}
+.upcoming-date{width:40px;text-align:center;flex-shrink:0;}
+.date-day{font-family:var(--font-d);font-size:1.5rem;color:var(--brown);line-height:1;}
+.date-mon{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--text-soft);font-weight:800;}
+.upcoming-divider{width:1px;height:36px;background:rgba(139,94,60,.18);flex-shrink:0;}
+.upcoming-info{flex:1;}
+.upcoming-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.upcoming-meta{font-size:11px;color:var(--text-soft);font-weight:700;}
+.upcoming-badge{flex-shrink:0;}
+.days-left{font-size:10px;font-weight:800;padding:4px 8px;border-radius:999px;}
+.days-soon{background:rgba(226,85,85,.12);color:var(--red);border:1px solid rgba(226,85,85,.2);}
+.days-ok{background:rgba(76,175,80,.1);color:var(--green);border:1px solid rgba(76,175,80,.2);}
+.days-mid{background:rgba(217,148,43,.12);color:var(--amber);border:1px solid rgba(217,148,43,.2);}
+
+/* CHART */
+.chart-wrap{padding:18px;}
+.chart-bars{display:flex;align-items:flex-end;gap:10px;height:110px;margin-bottom:8px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.bar{
+  width:100%;
+  background:linear-gradient(180deg,#d7b18b 0%,var(--brown) 100%);
+  border-radius:10px 10px 4px 4px;
+  transition:height .8s cubic-bezier(.34,1.56,.64,1);
+  position:relative;
+  box-shadow:0 8px 18px rgba(139,94,60,.15);
+}
+.bar:hover{filter:brightness(1.05);}
+.bar-val{font-size:10px;color:var(--brown-d);font-weight:800;}
+.bar-lbl{font-size:9px;color:var(--text-soft);text-transform:uppercase;letter-spacing:.06em;font-weight:800;}
+
+/* MODAL */
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(69,48,31,.35);
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--white);
+  border:1px solid var(--line);
+  width:520px;
+  max-width:95vw;
+  max-height:90vh;
+  overflow-y:auto;
+  animation:modalIn .3s cubic-bezier(.34,1.56,.64,1) both;
+  border-radius:18px;
+  box-shadow:0 20px 45px rgba(111,71,42,.18);
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.94);}to{opacity:1;transform:scale(1);}}
+.modal-head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(180deg,#fffdfb 0%,#faf4ed 100%);
+}
+.modal-title{font-family:var(--font-s);font-size:1.25rem;font-weight:600;color:var(--text);}
+.modal-close{
+  background:transparent;
+  border:none;
+  color:var(--text-soft);
+  font-size:18px;
+  cursor:pointer;
+  padding:4px 8px;
+  transition:var(--tr);
+}
+.modal-close:hover{color:var(--brown);}
+.modal-body{padding:20px;}
+.modal-row{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 0;
+  border-bottom:1px solid rgba(111,71,42,.08);
+  font-size:13px;
+  gap:20px;
+}
+.modal-row:last-child{border-bottom:none;}
+.modal-row .lk{color:var(--text-soft);font-weight:700;}
+.modal-row .vl{color:var(--text);font-weight:800;text-align:right;}
+.modal-total{
+  display:flex;
+  justify-content:space-between;
+  padding:14px 0 0;
+  margin-top:8px;
+  border-top:1px solid rgba(139,94,60,.22);
+}
+.modal-total .lk{
+  color:var(--brown);
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+  font-weight:800;
+}
+.modal-total .vl{font-family:var(--font-d);font-size:1.6rem;color:var(--brown);}
+.status-select{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:10px 14px;
+  font-family:var(--font-b);
+  font-size:13px;
+  outline:none;
+  cursor:pointer;
+  width:100%;
+  margin-top:16px;
+  transition:var(--tr);
+  border-radius:10px;
+  font-weight:700;
+}
+.status-select:focus{border-color:var(--brown);}
+.modal-actions{display:flex;gap:10px;margin-top:16px;}
+.modal-btn{
+  flex:1;
+  padding:11px;
+  font-family:var(--font-b);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:var(--tr);
+  border:none;
+  border-radius:10px;
+}
+.modal-btn.primary{background:var(--brown);color:#fff;}
+.modal-btn.primary:hover{background:var(--brown-d);}
+.modal-btn.danger{background:rgba(226,85,85,.08);color:var(--red);border:1px solid rgba(226,85,85,.24);}
+.modal-btn.danger:hover{background:var(--red);color:#fff;}
+
+/* FILTER TABS */
+.filter-tabs{
+  display:flex;
+  gap:6px;
+  padding:12px 18px;
+  border-bottom:1px solid rgba(111,71,42,.08);
+  flex-wrap:wrap;
+}
+.filter-tab{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--text-soft);
+  padding:7px 14px;
+  font-family:var(--font-b);
+  font-size:11px;
+  cursor:pointer;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  transition:var(--tr);
+  border-radius:999px;
+  font-weight:800;
+}
+.filter-tab:hover{border-color:rgba(139,94,60,.3);color:var(--brown);}
+.filter-tab.active{
+  background:rgba(139,94,60,.1);
+  border-color:rgba(139,94,60,.26);
+  color:var(--brown-d);
+}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:40px;color:var(--text-soft);font-size:13px;font-weight:700;}
+.empty-icon{font-size:36px;margin-bottom:12px;opacity:.55;}
+
+/* TOAST */
+.toast{
+  position:fixed;
+  bottom:24px;
+  right:24px;
+  background:#fff;
+  border:1px solid rgba(139,94,60,.25);
+  color:var(--text);
+  padding:12px 20px;
+  font-size:13px;
+  z-index:999;
+  transform:translateY(20px);
+  opacity:0;
+  transition:var(--tr);
+  display:flex;
+  align-items:center;
+  gap:8px;
+  border-radius:12px;
+  box-shadow:0 14px 28px rgba(111,71,42,.12);
+  font-weight:800;
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast .t-icon{color:var(--brown);}
+
+@media(max-width:900px){
+  .two-col{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .sidebar{width:185px;}
+}
+@media(max-width:600px){
+  .sidebar{display:none;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .search-box{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<div class="sidebar">
+  <div class="sb-logo">
+    <div class="logo-row">
+      <span class="logo-star">✦</span>
+      <span class="logo-txt">AURA <span style="font-family:'Cormorant Garamond',serif;color:#8b5e3c;font-style:italic;font-size:15px;">Events</span></span>
+    </div>
+    <div class="logo-sub">Admin Panel</div>
+  </div>
+  <div class="sb-nav">
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" onclick="showView('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
+    <div class="nav-item" onclick="showView('bookings')"><span class="nav-icon">📋</span> All Bookings <span class="nav-badge" id="pendingBadge">0</span></div>
+    <div class="nav-item" onclick="showView('upcoming')"><span class="nav-icon">📅</span> Upcoming Events</div>
+    <div class="nav-item" onclick="showView('completed')"><span class="nav-icon">✅</span> Completed</div>
+    <div class="nav-section">Management</div>
+    <div class="nav-item" onclick="showView('revenue')"><span class="nav-icon">💰</span> Revenue</div>
+    <div class="nav-item" onclick="showView('messages');clearMsgBadge()"><span class="nav-icon">💬</span> Messages <span class="nav-badge" id="msgBadge" style="display:none;background:#ef5350;">0</span></div>
+    <div class="nav-item" onclick="showView('reviews')"><span class="nav-icon">⭐</span> Reviews <span class="nav-badge" id="reviewBadge" style="display:none;background:#c9a96e;">0</span></div>
+    <div class="nav-item" onclick="addDemoBooking()"><span class="nav-icon">➕</span> Add Booking</div>
+  </div>
+  <div class="sb-footer">
+    <a href="index.html">← Back to Website</a>
+    <a href="adminlog.html" onclick="logout()" style="color:#ef5350;">🔒 Logout</a>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="page-title" id="pageTitle">Dashboard <em>Overview</em></div>
+    <div class="topbar-right">
+      <div class="search-box">
+        <span style="color:#8b5e3c">🔍</span>
+        <input type="text" placeholder="Search bookings..." id="searchInput" oninput="filterBookings()"/>
+      </div>
+      <button class="topbar-btn" onclick="addDemoBooking()">+ New Booking</button>
+    </div>
+  </div>
+
+  <div class="content" id="mainContent"></div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Booking Details</div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span class="t-icon">✦</span><span id="toastMsg"></span></div>
+
+<script>
+const EVENTS_LIST = ['Wedding','Corporate Event','Birthday Party','Cultural Event','Gala Night','Concert'];
+const THEMES = ['Royal Classic','Garden Romance','Luxury Minimalist','Modern Corporate','Glam & Gold','Tech & Innovation','Classical Tamil','Black Tie Classic'];
+const PACKAGES = ['Silver','Gold','Platinum'];
+const CITIES = ['Chennai','Coimbatore','Madurai','Bangalore','Mumbai','Delhi'];
+const NAMES = ['Priya Sharma','Rajesh Kumar','Meena Iyer','Karthik Rajan','Sunitha Devi','Arjun Nair','Lakshmi Venkat','Vikram Singh','Anitha Raj','Deepak Mohan','Pooja Krishnan','Suresh Babu'];
+const PHONES = ['+91 98765 43210','+91 87654 32109','+91 76543 21098','+91 95432 10987','+91 94321 09876','+91 93210 98765'];
+const AVATARBG = ['#d8b08a','#9cb6dd','#cbd78f','#d99db8','#93d8d0','#d8ca7d','#b59cdd','#97d6a3'];
+
+let bookings = [];
+let currentView = 'dashboard';
+let editingId = null;
+
+function genId(){ return 'AURA-' + Math.floor(100000+Math.random()*900000); }
+function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function randDate(daysOffset){
+  const d = new Date();
+  d.setDate(d.getDate() + daysOffset);
+  return d.toISOString().split('T')[0];
+}
+function fmtDate(dateStr){
+  if(!dateStr) return '—';
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+function daysLeft(dateStr){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ev = new Date(dateStr); ev.setHours(0,0,0,0);
+  return Math.ceil((ev-today)/(1000*60*60*24));
+}
+function fmtAmt(n){ return '₹'+n.toLocaleString('en-IN'); }
+
+function seedData(){
+  for(let i=0;i<14;i++){
+    const isPast = i < 6;
+    const status = isPast ? rand(['completed','cancelled']) : rand(['pending','confirmed','confirmed']);
+    const dOffset = isPast ? -randInt(10,120) : randInt(3,180);
+    const pkg = rand(PACKAGES);
+    const baseAmt = pkg==='Silver'?randInt(80000,200000):pkg==='Gold'?randInt(200000,500000):randInt(500000,1500000);
+    const name = NAMES[i%NAMES.length];
+    bookings.push({
+      id: genId(),
+      name,
+      phone: rand(PHONES),
+      email: name.toLowerCase().replace(' ','.')+rand(['@gmail.com','@yahoo.com','@outlook.com']),
+      event: rand(EVENTS_LIST),
+      theme: rand(THEMES),
+      package: pkg,
+      guests: randInt(50,500),
+      date: randDate(dOffset),
+      city: rand(CITIES),
+      amount: baseAmt,
+      status,
+      createdAt: randDate(-randInt(1,30)),
+      notes: rand(['Vegetarian catering required','Need rooftop venue','Kids entertainment needed','Outdoor preferred','VIP guest list attached','']),
+      avatar: AVATARBG[i%AVATARBG.length],
+    });
+  }
+  bookings.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+}
+
+function showView(view){
+  currentView = view;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  event && event.target && event.target.closest('.nav-item') && event.target.closest('.nav-item').classList.add('active');
+  const titles = {
+    dashboard:'Dashboard <em>Overview</em>',
+    bookings:'All <em>Bookings</em>',
+    upcoming:'Upcoming <em>Events</em>',
+    messages:'Contact <em>Messages</em>',
+    completed:'Completed <em>Events</em>',
+    revenue:'Revenue <em>Analytics</em>',
+    reviews:'Customer <em>Reviews</em>'
+  };
+  document.getElementById('pageTitle').innerHTML = titles[view]||'Dashboard';
+  renderView(view);
+}
+
+function renderView(view){
+  const c = document.getElementById('mainContent');
+  if(view==='dashboard') c.innerHTML = renderDashboard();
+  else if(view==='bookings') c.innerHTML = renderBookingsView('all');
+  else if(view==='upcoming') c.innerHTML = renderCalendarView();
+  else if(view==='completed') c.innerHTML = renderBookingsView('completed');
+  else if(view==='revenue') c.innerHTML = renderRevenue();
+  else if(view==='messages') { c.innerHTML = '<div style="padding:20px"><div class="section-card"><div class="section-head"><div class="section-title">Loading Messages...</div></div></div></div>'; loadMessages(); }
+  else if(view==='reviews') { c.innerHTML = '<div style="padding:20px"><div class="section-card"><div class="section-head"><div class="section-title">Loading Reviews...</div></div></div></div>'; loadReviews(); }
+  animateBars();
+  updateBadges();
+}
+
+function renderDashboard(){
+  const total = bookings.length;
+  const pending = bookings.filter(b=>b.status==='pending').length;
+  const upcoming = bookings.filter(b=>b.status!=='completed'&&b.status!=='cancelled'&&new Date(b.date)>=new Date()).length;
+  const revenue = bookings.filter(b=>b.status==='completed').reduce((s,b)=>s+b.amount,0);
+  const upcomingList = bookings.filter(b=>['pending','confirmed'].includes(b.status)&&new Date(b.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date)).slice(0,6);
+  const recentBookings = [...bookings].slice(0,6);
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const now = new Date();
+  const monthData = Array.from({length:6},(_,i)=>{
+    const d = new Date(now.getFullYear(),now.getMonth()-5+i,1);
+    const count = bookings.filter(b=>{
+      const bd=new Date(b.createdAt);
+      return bd.getMonth()===d.getMonth()&&bd.getFullYear()===d.getFullYear();
+    }).length;
+    return {month:months[d.getMonth()],count};
+  });
+  const maxCount = Math.max(...monthData.map(m=>m.count),1);
+
+  return `
+  <div class="stats-row">
+    <div class="stat-card gold">
+      <div class="stat-label">Total Bookings</div>
+      <div class="stat-val">${total}</div>
+      <div class="stat-sub">All time</div>
+      <div class="stat-icon">📋</div>
+    </div>
+    <div class="stat-card amber">
+      <div class="stat-label">Pending</div>
+      <div class="stat-val">${pending}</div>
+      <div class="stat-sub">Needs confirmation</div>
+      <div class="stat-icon">⏳</div>
+    </div>
+    <div class="stat-card blue">
+      <div class="stat-label">Upcoming Events</div>
+      <div class="stat-val">${upcoming}</div>
+      <div class="stat-sub">Scheduled ahead</div>
+      <div class="stat-icon">📅</div>
+    </div>
+    <div class="stat-card green">
+      <div class="stat-label">Total Revenue</div>
+      <div class="stat-val" style="font-size:1.4rem">${fmtAmt(revenue)}</div>
+      <div class="stat-sub">Completed events</div>
+      <div class="stat-icon">💰</div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="section-card">
+      <div class="section-head">
+        <div class="section-title">Recent Bookings</div>
+        <button class="section-action" onclick="showView('bookings')">View All →</button>
+      </div>
+      ${renderTableRows(recentBookings)}
+    </div>
+    <div class="section-card">
+      <div class="section-head">
+        <div class="section-title">Upcoming Events</div>
+        <button class="section-action" onclick="showView('upcoming')">View All →</button>
+      </div>
+      <div class="upcoming-list">${upcomingList.map(renderUpcomingItem).join('')}</div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-head">
+      <div class="section-title">Monthly Bookings — Last 6 Months</div>
+    </div>
+    <div class="chart-wrap">
+      <div class="chart-bars" id="chartBars">
+        ${monthData.map(m=>`
+          <div class="bar-col">
+            <div class="bar-val">${m.count}</div>
+            <div class="bar" data-h="${Math.round((m.count/maxCount)*90)}" style="height:0px"></div>
+            <div class="bar-lbl">${m.month}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderBookingsView(filter){
+  let filtered = [...bookings];
+  const search = document.getElementById('searchInput')?.value?.toLowerCase()||'';
+  if(search) filtered = filtered.filter(b=>b.name.toLowerCase().includes(search)||b.id.toLowerCase().includes(search)||b.event.toLowerCase().includes(search)||b.city.toLowerCase().includes(search));
+  if(filter==='upcoming') filtered = filtered.filter(b=>['pending','confirmed'].includes(b.status)&&new Date(b.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(filter==='completed') filtered = filtered.filter(b=>b.status==='completed');
+
+  const tabs = filter==='all'?`
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterByStatus('all',this)">All (${bookings.length})</button>
+      <button class="filter-tab" onclick="filterByStatus('pending',this)">Pending (${bookings.filter(b=>b.status==='pending').length})</button>
+      <button class="filter-tab" onclick="filterByStatus('confirmed',this)">Confirmed (${bookings.filter(b=>b.status==='confirmed').length})</button>
+      <button class="filter-tab" onclick="filterByStatus('completed',this)">Completed (${bookings.filter(b=>b.status==='completed').length})</button>
+      <button class="filter-tab" onclick="filterByStatus('cancelled',this)">Cancelled (${bookings.filter(b=>b.status==='cancelled').length})</button>
+    </div>`:'';
+
+  return `<div class="section-card">${tabs}${renderTableRows(filtered)}</div>`;
+}
+
+function renderTableRows(list){
+  if(!list.length) return `<div class="empty-state"><div class="empty-icon">📭</div>No bookings found</div>`;
+  return `<div class="table-wrap"><table>
+    <thead><tr>
+      <th>Client</th><th>Event</th><th>Theme</th><th>Date</th>
+      <th>Guests</th><th>Amount</th><th>Status</th><th>Action</th>
+    </tr></thead>
+    <tbody>${list.map(b=>`
+      <tr onclick="openModal('${b.id}')">
+        <td><div class="client-cell">
+          <div class="client-avatar" style="background:${b.avatar};color:#2f2219;font-family:'Bebas Neue',sans-serif;">${b.name[0]}</div>
+          <div><div class="client-name">${b.name}</div><div class="client-phone">${b.phone}</div></div>
+        </div></td>
+        <td><div class="event-chip">${b.event}</div></td>
+        <td style="color:#6d5848;font-size:12px;font-weight:700;">${b.theme}</td>
+        <td style="font-size:12px;font-weight:700;">${fmtDate(b.date)}</td>
+        <td style="text-align:center">${b.guests}</td>
+        <td><span class="amt">${fmtAmt(b.amount)}</span></td>
+        <td><span class="badge ${b.status}">${b.status}</span></td>
+        <td><button class="action-btn" onclick="event.stopPropagation();openModal('${b.id}')">View</button></td>
+      </tr>`).join('')}
+    </tbody>
+  </table></div>`;
+}
+
+function renderUpcomingItem(b){
+  const d = new Date(b.date);
+  const dl = daysLeft(b.date);
+  const dlClass = dl<=7?'days-soon':dl<=30?'days-mid':'days-ok';
+  const dlTxt = dl===0?'Today':dl===1?'Tomorrow':`${dl}d left`;
+  return `<div class="upcoming-item" onclick="openModal('${b.id}')">
+    <div class="upcoming-date">
+      <div class="date-day">${d.getDate()}</div>
+      <div class="date-mon">${d.toLocaleString('en',{month:'short'})}</div>
+    </div>
+    <div class="upcoming-divider"></div>
+    <div class="upcoming-info">
+      <div class="upcoming-name">${b.name}</div>
+      <div class="upcoming-meta">${b.event} · ${b.city} · ${b.guests} guests</div>
+    </div>
+    <div class="upcoming-badge"><span class="days-left ${dlClass}">${dlTxt}</span></div>
+  </div>`;
+}
+
+function renderRevenue(){
+  const completed = bookings.filter(b=>b.status==='completed');
+  const totalRev = completed.reduce((s,b)=>s+b.amount,0);
+  const avgRev = completed.length ? Math.round(totalRev/completed.length) : 0;
+  const eventRevMap = {};
+  bookings.forEach(b=>{
+    if(b.status==='completed'){
+      if(!eventRevMap[b.event]) eventRevMap[b.event]=0;
+      eventRevMap[b.event]+=b.amount;
+    }
+  });
+  const sortedEvents = Object.entries(eventRevMap).sort((a,b)=>b[1]-a[1]);
+  const totalRevForPie = sortedEvents.reduce((s,[,v])=>s+v,0)||1;
+  
+  // Pie chart colors
+  const PIE_COLORS = ['#8b5e3c','#c9a96e','#d4956a','#b07d55','#e8c99a','#6b3f2a','#f0d9b5'];
+  
+  // Build SVG pie chart
+  let startAngle = -90;
+  let pieSlices = '';
+  let legendItems = '';
+  const cx = 110, cy = 110, r = 90;
+  
+  sortedEvents.forEach(([ev, amt], i) => {
+    const pct = amt / totalRevForPie;
+    const angle = pct * 360;
+    const endAngle = startAngle + angle;
+    const large = angle > 180 ? 1 : 0;
+    const x1 = cx + r * Math.cos(startAngle * Math.PI/180);
+    const y1 = cy + r * Math.sin(startAngle * Math.PI/180);
+    const x2 = cx + r * Math.cos(endAngle * Math.PI/180);
+    const y2 = cy + r * Math.sin(endAngle * Math.PI/180);
+    const color = PIE_COLORS[i % PIE_COLORS.length];
+    pieSlices += `<path d="M${cx},${cy} L${x1.toFixed(1)},${y1.toFixed(1)} A${r},${r} 0 ${large},1 ${x2.toFixed(1)},${y2.toFixed(1)} Z" fill="${color}" stroke="#fff" stroke-width="2" opacity="0.9"/>`;
+    legendItems += `<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;">
+      <div style="width:12px;height:12px;border-radius:3px;background:${color};flex-shrink:0;"></div>
+      <span style="color:#6d5848;font-weight:700;flex:1;">${ev}</span>
+      <span style="color:#8b5e3c;font-weight:800;">${fmtAmt(amt)}</span>
+    </div>`;
+    startAngle = endAngle;
+  });
+
+  return `
+  <div class="stats-row">
+    <div class="stat-card gold"><div class="stat-label">Total Revenue</div><div class="stat-val" style="font-size:1.3rem">${fmtAmt(totalRev)}</div><div class="stat-sub">All completed events</div><div class="stat-icon">💰</div></div>
+    <div class="stat-card green"><div class="stat-label">Avg per Event</div><div class="stat-val" style="font-size:1.3rem">${fmtAmt(avgRev)}</div><div class="stat-sub">Per completed booking</div><div class="stat-icon">📈</div></div>
+    <div class="stat-card blue"><div class="stat-label">Completed Events</div><div class="stat-val">${completed.length}</div><div class="stat-sub">Successfully done</div><div class="stat-icon">✅</div></div>
+    <div class="stat-card amber"><div class="stat-label">Pipeline Value</div><div class="stat-val" style="font-size:1.2rem">${fmtAmt(bookings.filter(b=>b.status==='confirmed').reduce((s,b)=>s+b.amount,0))}</div><div class="stat-sub">Confirmed upcoming</div><div class="stat-icon">⚡</div></div>
+  </div>
+  <div class="two-col" style="margin-bottom:14px;">
+    <div class="section-card">
+      <div class="section-head"><div class="section-title">Revenue by Event Type — Pie Chart</div></div>
+      <div style="padding:20px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;">
+        <svg width="220" height="220" viewBox="0 0 220 220" style="background:transparent;">
+          ${pieSlices || '<circle cx="110" cy="110" r="90" fill="#f0e6da"/>'}
+          <circle cx="110" cy="110" r="40" fill="#fdf9f6"/>
+          <text x="110" y="106" text-anchor="middle" font-size="10" fill="#6d5848" font-weight="700">REVENUE</text>
+          <text x="110" y="120" text-anchor="middle" font-size="9" fill="#8b5e3c">${completed.length} events</text>
+        </svg>
+        <div style="flex:1;min-width:160px;">${legendItems || '<p style="color:#aaa;font-size:13px;">No completed events</p>'}</div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-title">Status Breakdown</div></div>
+      <div style="padding:20px;">
+        ${['pending','confirmed','completed','cancelled'].map(s=>{
+          const cnt = bookings.filter(b=>b.status===s).length;
+          const pct = bookings.length ? Math.round(cnt/bookings.length*100) : 0;
+          const colors = {pending:'#ffa726',confirmed:'#42a5f5',completed:'#4caf50',cancelled:'#ef5350'};
+          return `<div style="margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px">
+              <span style="color:#6d5848;font-weight:700;text-transform:capitalize;">${s}</span>
+              <span style="color:#8b5e3c;font-weight:800;">${cnt} (${pct}%)</span>
+            </div>
+            <div style="background:#f0e6da;height:8px;border-radius:999px;overflow:hidden;">
+              <div style="background:${colors[s]};height:100%;border-radius:999px;width:${pct}%;transition:width 1s ease"></div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+  </div>
+  <div class="section-card">
+    <div class="section-head"><div class="section-title">Completed Bookings</div></div>
+    ${renderTableRows(completed)}
+  </div>`;
+}
+
+function openModal(id){
+  const b = bookings.find(x=>x.id===id);
+  if(!b) return;
+  editingId = id;
+  document.getElementById('modalTitle').textContent = b.name + ' — ' + b.event;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-row"><span class="lk">Booking ID</span><span class="vl" style="color:#8b5e3c;font-family:'Bebas Neue',sans-serif;letter-spacing:.1em">${b.id}</span></div>
+    <div class="modal-row"><span class="lk">Client Name</span><span class="vl">${b.name}</span></div>
+    <div class="modal-row"><span class="lk">Phone</span><span class="vl">${b.phone}</span></div>
+    <div class="modal-row"><span class="lk">Email</span><span class="vl" style="font-size:12px">${b.email}</span></div>
+    <div class="modal-row"><span class="lk">Event Type</span><span class="vl">${b.event}</span></div>
+    <div class="modal-row"><span class="lk">Theme</span><span class="vl">${b.theme}</span></div>
+    <div class="modal-row"><span class="lk">Package</span><span class="vl">${b.package}</span></div>
+    <div class="modal-row"><span class="lk">Event Date</span><span class="vl">${fmtDate(b.date)}</span></div>
+    <div class="modal-row"><span class="lk">City</span><span class="vl">${b.city}</span></div>
+    <div class="modal-row"><span class="lk">Guests</span><span class="vl">${b.guests} people</span></div>
+    ${b.notes?`<div class="modal-row"><span class="lk">Notes</span><span class="vl" style="font-size:12px;max-width:260px;text-align:right">${b.notes}</span></div>`:''}
+    <div class="modal-total"><span class="lk">Total Amount</span><span class="vl">${fmtAmt(b.amount)}</span></div>
+    <div style="margin-top:16px">
+      <div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#6d5848;margin-bottom:6px;font-weight:800;">Update Status</div>
+      <select class="status-select" id="statusSelect" onchange="updateStatus('${b.id}',this.value)">
+        <option value="pending" ${b.status==='pending'?'selected':''}>⏳ Pending</option>
+        <option value="confirmed" ${b.status==='confirmed'?'selected':''}>✅ Confirmed</option>
+        <option value="completed" ${b.status==='completed'?'selected':''}>🎉 Completed</option>
+        <option value="cancelled" ${b.status==='cancelled'?'selected':''}>❌ Cancelled</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn primary" onclick="closeModalDirect()">Done</button>
+      <button class="modal-btn danger" onclick="deleteBooking('${b.id}')">Delete</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(e){ if(e.target===document.getElementById('modalOverlay')) closeModalDirect(); }
+function closeModalDirect(){ document.getElementById('modalOverlay').classList.remove('open'); }
+
+async function updateStatus(id, status){
+  try {
+    await fetch(API + '/bookings/' + id, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({status})
+    });
+    const b = bookings.find(x=>x.id===id);
+    if(b){ b.status=status; }
+    showToast('Status updated to ' + status + '!');
+    renderView(currentView);
+    updateBadges();
+  } catch(err) {
+    showToast('Error updating status!');
+  }
+}
+
+async function deleteBooking(id){
+  try {
+    await fetch(API + '/bookings/' + id, { method: 'DELETE' });
+    bookings = bookings.filter(x=>x.id!==id);
+    closeModalDirect();
+    showToast('Booking deleted!');
+    renderView(currentView);
+    updateBadges();
+  } catch(err) {
+    showToast('Error deleting booking!');
+  }
+}
+
+function filterByStatus(status, btn){
+  document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  let filtered = status==='all'?[...bookings]:bookings.filter(b=>b.status===status);
+  const tableSection = document.querySelector('.section-card');
+  const tabs = tableSection.querySelector('.filter-tabs');
+  tableSection.innerHTML = tabs.outerHTML + renderTableRows(filtered);
+}
+
+function filterBookings(){
+  if(currentView==='bookings') renderView('bookings');
+}
+
+async function addDemoBooking(){
+  const name = rand(NAMES);
+  const pkg = rand(PACKAGES);
+  const base = pkg==='Silver'?randInt(80000,200000):pkg==='Gold'?randInt(200000,500000):randInt(500000,1200000);
+  const payload = {
+    name,
+    phone: rand(PHONES),
+    email: name.toLowerCase().replace(' ','.') + rand(['@gmail.com','@yahoo.com']),
+    event_type: rand(EVENTS_LIST),
+    theme: rand(THEMES),
+    package: pkg,
+    guests: randInt(50,400),
+    event_date: randDate(randInt(10,150)),
+    city: rand(CITIES),
+    amount: base,
+    notes: ''
+  };
+  try {
+    const res = await fetch(API + '/bookings', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const newB = await res.json();
+    bookings.unshift({
+      id: newB.booking_id,
+      name: newB.name,
+      phone: newB.phone || '',
+      email: newB.email,
+      event: newB.event_type,
+      theme: newB.theme || '',
+      package: newB.package || 'Gold',
+      guests: newB.guests || 0,
+      date: newB.event_date || '',
+      city: newB.city || '',
+      amount: newB.amount || 0,
+      status: newB.status,
+      createdAt: new Date().toISOString().split('T')[0],
+      notes: newB.notes || '',
+      avatar: rand(AVATARBG),
+    });
+    showToast('New booking saved to database — ' + name + '!');
+    renderView(currentView);
+    updateBadges();
+  } catch(err) {
+    showToast('Error saving booking!');
+  }
+}
+
+function updateBadges(){
+  const p = bookings.filter(b=>b.status==='pending').length;
+  document.getElementById('pendingBadge').textContent = p;
+  document.getElementById('pendingBadge').style.display = p ? '' : 'none';
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+function animateBars(){
+  setTimeout(()=>{
+    document.querySelectorAll('.bar[data-h]').forEach(b=>{
+      b.style.height = b.dataset.h + 'px';
+    });
+  },100);
+}
+
+const API = 'http://127.0.0.1:8000/api';
+
+async function loadBookings() {
+  try {
+    showToast('Loading bookings...');
+    const res = await fetch(API + '/bookings');
+    const data = await res.json();
+    bookings = data.map(b => ({
+      id: b.booking_id,
+      name: b.name,
+      phone: b.phone || '',
+      email: b.email,
+      event: b.event_type,
+      theme: b.theme || '',
+      package: b.package || 'Gold',
+      guests: b.guests || 0,
+      date: b.event_date || '',
+      city: b.city || '',
+      amount: b.amount || 0,
+      status: b.status,
+      createdAt: b.created_at ? b.created_at.split('T')[0] : new Date().toISOString().split('T')[0],
+      notes: b.notes || '',
+      avatar: AVATARBG[Math.floor(Math.random()*AVATARBG.length)],
+    }));
+    updateBadges();
+    renderView('dashboard');
+    showToast('Data loaded from database!');
+    fetchMsgCount();
+  } catch(err) {
+    console.error(err);
+    showToast('Backend offline — loading demo data');
+    seedData();
+    updateBadges();
+    renderView('dashboard');
+  }
+}
+
+
+// ── CALENDAR VIEW ──
+function renderCalendarView(){
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+  
+  const eventMap = {};
+  bookings.filter(b=>b.date).forEach(b=>{
+    const d = new Date(b.date);
+    if(d.getFullYear()===year && d.getMonth()===month){
+      const key = d.getDate();
+      if(!eventMap[key]) eventMap[key]=[];
+      eventMap[key].push(b);
+    }
+  });
+
+  const dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let calGrid = dayNames.map(d=>`<div style="text-align:center;font-size:10px;font-weight:800;color:#8b5e3c;padding:6px 0;text-transform:uppercase;letter-spacing:.08em;">${d}</div>`).join('');
+  
+  for(let i=0;i<firstDay;i++) calGrid += '<div></div>';
+  
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday = d===now.getDate();
+    const events = eventMap[d]||[];
+    const hasEvent = events.length>0;
+    calGrid += `<div onclick="showDayEvents(${d},${year},${month})" style="
+      min-height:60px;border:1px solid ${isToday?'#8b5e3c':'#f0e6da'};
+      border-radius:6px;padding:6px;cursor:pointer;
+      background:${isToday?'rgba(139,94,60,0.12)':hasEvent?'rgba(201,169,110,0.1)':'transparent'};
+      transition:all 0.2s;
+    ">
+      <div style="font-size:13px;font-weight:${isToday?'800':'600'};color:${isToday?'#8b5e3c':'#4a3728'};margin-bottom:3px;">${d}</div>
+      ${events.slice(0,2).map(e=>`<div style="font-size:9px;background:#8b5e3c;color:#fff;padding:2px 5px;border-radius:3px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${e.name}</div>`).join('')}
+      ${events.length>2?`<div style="font-size:9px;color:#8b5e3c;font-weight:700;">+${events.length-2} more</div>`:''}
+    </div>`;
+  }
+
+  const upcomingList = bookings.filter(b=>['pending','confirmed'].includes(b.status)&&b.date&&new Date(b.date)>=new Date()).sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+  return `
+  <div class="two-col" style="margin-bottom:14px;">
+    <div class="section-card">
+      <div class="section-head"><div class="section-title">📅 ${monthNames[month]} ${year}</div></div>
+      <div style="padding:16px 18px;">
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;">
+          ${calGrid}
+        </div>
+      </div>
+    </div>
+    <div class="section-card">
+      <div class="section-head"><div class="section-title">Upcoming Events</div></div>
+      <div class="upcoming-list">
+        ${upcomingList.length ? upcomingList.map(renderUpcomingItem).join('') : '<div class="empty-state"><div class="empty-icon">📭</div>No upcoming events</div>'}
+      </div>
+    </div>
+  </div>
+  <div class="section-card" id="dayEventsCard" style="display:none;">
+    <div class="section-head"><div class="section-title" id="dayEventsTitle">Events on this day</div></div>
+    <div id="dayEventsBody"></div>
+  </div>`;
+}
+
+function showDayEvents(day, year, month){
+  const events = bookings.filter(b=>{
+    if(!b.date) return false;
+    const bd = new Date(b.date);
+    return bd.getDate()===day && bd.getMonth()===month && bd.getFullYear()===year;
+  });
+  const card = document.getElementById('dayEventsCard');
+  const title = document.getElementById('dayEventsTitle');
+  const body = document.getElementById('dayEventsBody');
+  if(!card) return;
+  if(!events.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  title.textContent = `Events on ${day} ${monthNames[month]} ${year}`;
+  body.innerHTML = renderTableRows(events);
+}
+
+// ── MESSAGES VIEW ──
+async function loadMessages(){
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/contacts');
+    const data = await res.json();
+    const c = document.getElementById('mainContent');
+    if(!data.length){
+      c.innerHTML = '<div class="section-card"><div class="empty-state"><div class="empty-icon">💬</div>No messages yet</div></div>';
+      return;
+    }
+    c.innerHTML = `<div class="section-card">
+      <div class="section-head"><div class="section-title">Contact Messages (${data.length})</div></div>
+      <div style="padding:12px 18px;">
+        ${data.map(m=>`
+          <div id="msg-${m.id}" style="border:1px solid #f0e6da;border-radius:8px;padding:16px;margin-bottom:12px;background:#fdf9f6;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+              <div>
+                <div style="font-size:14px;font-weight:800;color:#4a3728;">${m.name}</div>
+                <div style="font-size:12px;color:#8b5e3c;">${m.email} ${m.phone?'· '+m.phone:''}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                ${m.event_type?`<span style="background:#f0e6da;color:#8b5e3c;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;">${m.event_type}</span>`:''}
+                <div style="font-size:10px;color:#aaa;">${m.created_at?m.created_at.split('T')[0]:''}</div>
+                <button onclick="deleteMessage(${m.id})" style="background:rgba(239,83,80,0.1);border:1px solid rgba(239,83,80,0.3);color:#ef5350;padding:4px 10px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:700;transition:all 0.2s;" onmouseover="this.style.background='#ef5350';this.style.color='#fff'" onmouseout="this.style.background='rgba(239,83,80,0.1)';this.style.color='#ef5350'">🗑 Delete</button>
+              </div>
+            </div>
+            ${m.message?`<div style="font-size:13px;color:#6d5848;background:#fff;padding:10px 14px;border-radius:6px;border:1px solid #f0e6da;">${m.message}</div>`:''}
+          </div>`).join('')}
+      </div>
+    </div>`;
+  } catch(err) {
+    document.getElementById('mainContent').innerHTML = '<div class="section-card"><div class="empty-state"><div class="empty-icon">⚠️</div>Error loading messages — backend running-a check panu!</div></div>';
+  }
+}
+
+async function deleteMessage(id){
+  if(!confirm('Delete this message?')) return;
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/contact/' + id, { method: 'DELETE' });
+    if(res.ok){
+      const el = document.getElementById('msg-' + id);
+      if(el){ el.style.opacity='0'; el.style.transition='opacity 0.3s'; setTimeout(()=>el.remove(), 300); }
+      showToast('Message deleted!');
+      fetchMsgCount();
+    } else {
+      showToast('Error deleting message!');
+    }
+  } catch(err) {
+    // Remove from UI anyway
+    const el = document.getElementById('msg-' + id);
+    if(el){ el.style.opacity='0'; setTimeout(()=>el.remove(), 300); }
+    showToast('Message deleted!');
+  }
+}
+
+
+// ── MESSAGE NOTIFICATION ──
+let totalMsgCount = 0;
+
+async function fetchMsgCount(){
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/contacts');
+    const data = await res.json();
+    const saved = parseInt(localStorage.getItem('aura-msg-seen')||'0');
+    const unread = data.length - saved;
+    totalMsgCount = data.length;
+    const badge = document.getElementById('msgBadge');
+    if(badge){
+      if(unread > 0){
+        badge.textContent = unread;
+        badge.style.display = '';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+  } catch(err) {
+    console.log('Could not fetch message count');
+  }
+}
+
+function clearMsgBadge(){
+  localStorage.setItem('aura-msg-seen', totalMsgCount);
+  const badge = document.getElementById('msgBadge');
+  if(badge) badge.style.display = 'none';
+}
+
+// Auto refresh message count every 30 seconds
+setInterval(fetchMsgCount, 30000);
+
+function logout(){
+  sessionStorage.removeItem('aura-admin');
+  window.location.href = 'admin-login.html';
+}
+
+loadBookings();
+</script>
+
+<script>
+// ── Reviews Section ──
+
+
+async function loadReviews(){
+  try {
+    const res = await fetch('http://127.0.0.1:8000/api/reviews');
+    if(!res.ok) throw new Error('API error: ' + res.status);
+    const reviews = await res.json();
+    console.log('Reviews loaded:', reviews);
+    renderReviews(reviews);
+    updateReviewBadge(reviews);
+  } catch(e){
+    console.error('Reviews error:', e);
+    const c = document.getElementById('mainContent');
+    if(c) c.innerHTML = `
+      <div style="padding:20px">
+        <div class="section-card">
+          <div class="section-head"><div class="section-title">Reviews</div></div>
+          <p style="color:#888;padding:20px;text-align:center;">⚠️ Error: ${e.message}. Backend running-a check panu!</p>
+        </div>
+      </div>`;
+  }
+}
+
+function updateReviewBadge(reviews){
+  const pending = reviews.filter(r => r.status !== 'approved').length;
+  const badge = document.getElementById('reviewBadge');
+  if(pending > 0){ badge.textContent = pending; badge.style.display = 'inline-block'; }
+  else { badge.style.display = 'none'; }
+}
+
+function renderReviews(reviews){
+  const total = reviews.length;
+  const avg = total ? (reviews.reduce((s,r)=>s+r.rating,0)/total).toFixed(1) : '0.0';
+  const approved = reviews.filter(r=>r.status==='approved').length;
+  const pending  = reviews.filter(r=>r.status!=='approved').length;
+
+  // Star colors
+  const starColors = {5:'#FFD700', 4:'#FFA500', 3:'#87CEEB', 2:'#DDA0DD', 1:'#FF6B6B'};
+  const starLabels = {5:'Excellent', 4:'Good', 3:'Average', 2:'Poor', 1:'Terrible'};
+
+  const dist = [5,4,3,2,1].map(star => {
+    const cnt = reviews.filter(r=>r.rating===star).length;
+    const pct = total ? Math.round((cnt/total)*100) : 0;
+    return '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' +
+      '<span style="font-size:12px;color:' + starColors[star] + ';width:24px;font-weight:700;">' + star + '★</span>' +
+      '<div style="flex:1;background:rgba(201,169,110,0.1);border-radius:20px;height:8px;overflow:hidden;">' +
+        '<div style="width:' + pct + '%;height:100%;background:' + starColors[star] + ';border-radius:20px;transition:width 1s ease;"></div>' +
+      '</div>' +
+      '<span style="font-size:12px;color:#888;width:20px;">' + cnt + '</span>' +
+      '<span style="font-size:10px;color:' + starColors[star] + ';width:60px;">' + starLabels[star] + '</span>' +
+    '</div>';
+  }).join('');
+
+  // Star rating display
+  function getStars(rating) {
+    let s = '';
+    for(let i=1;i<=5;i++) {
+      s += '<span style="color:' + (i<=rating ? starColors[rating] : '#ddd') + ';font-size:18px;">' + (i<=rating ? '★' : '☆') + '</span>';
+    }
+    return s;
+  }
+
+  const cards = reviews.length === 0
+    ? '<p style="color:#888;text-align:center;padding:40px;">No reviews yet!</p>'
+    : reviews.map(function(r) {
+        const bgColor = r.status === 'approved' ? 'rgba(76,175,80,0.05)' : 'rgba(255,167,38,0.05)';
+        const borderColor = r.status === 'approved' ? 'rgba(76,175,80,0.2)' : 'rgba(255,167,38,0.2)';
+        const statusBadge = r.status === 'approved'
+          ? '<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(76,175,80,0.15);color:#81C784;border:1px solid rgba(76,175,80,0.3);">✓ Approved</span>'
+          : '<span style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(255,167,38,0.12);color:#FFB74D;border:1px solid rgba(255,167,38,0.3);">⏳ Pending</span>';
+        const approveBtn = r.status !== 'approved'
+          ? '<button onclick="approveReview(' + r.id + ')" style="background:rgba(76,175,80,0.15);border:1px solid rgba(76,175,80,0.3);color:#81C784;padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;font-weight:600;">✓ Approve</button>'
+          : '';
+        const deleteBtn = '<button onclick="deleteReview(' + r.id + ')" style="background:rgba(239,83,80,0.1);border:1px solid rgba(239,83,80,0.3);color:#ef5350;padding:4px 12px;border-radius:20px;font-size:11px;cursor:pointer;font-weight:600;">🗑 Delete</button>';
+        const comment = r.comment ? '<p style="font-size:13px;color:#888;margin-top:10px;border-top:1px solid rgba(255,255,255,0.05);padding-top:10px;font-style:italic;">"' + r.comment + '"</p>' : '';
+        const date = r.created_at ? new Date(r.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}) : '';
+        const initial = r.name ? r.name[0].toUpperCase() : 'A';
+        const avatarColors = ['#c9824a','#4a82c9','#9ac94a','#c94a82','#4ac9c0'];
+        const avatarColor = avatarColors[r.id % avatarColors.length];
+        
+        return '<div id="review-' + r.id + '" style="border:1px solid ' + borderColor + ';border-radius:10px;padding:16px 20px;margin-bottom:12px;background:' + bgColor + ';transition:all 0.3s;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">' +
+            '<div style="display:flex;align-items:center;gap:12px;">' +
+              '<div style="width:40px;height:40px;border-radius:50%;background:' + avatarColor + ';display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;color:#fff;flex-shrink:0;">' + initial + '</div>' +
+              '<div>' +
+                '<div style="font-weight:600;font-size:14px;color:#fff;">' + r.name + '</div>' +
+                '<div style="margin:3px 0;">' + getStars(r.rating) + '</div>' +
+                '<div style="font-size:11px;color:#666;">' + (r.event_type || 'Aura Events') + ' · ' + date + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">' + statusBadge + approveBtn + deleteBtn + '</div>' +
+          '</div>' + comment +
+        '</div>';
+      }).join('');
+
+  // Avg rating color
+  const avgNum = parseFloat(avg);
+  const avgColor = avgNum >= 4 ? '#FFD700' : avgNum >= 3 ? '#FFA500' : '#FF6B6B';
+
+  const mc = document.getElementById('mainContent');
+  if(!mc) return;
+  mc.innerHTML = 
+    '<div style="padding:20px;display:flex;flex-direction:column;gap:16px;">' +
+
+    // Stats
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;">' +
+      '<div class="section-card" style="padding:20px;text-align:center;border-top:3px solid #FFD700;">' +
+        '<div style="font-size:2.5rem;font-weight:700;color:' + avgColor + ';">' + avg + '</div>' +
+        '<div style="font-size:20px;letter-spacing:3px;margin:4px 0;color:#FFD700;">★★★★★</div>' +
+        '<div style="font-size:11px;color:#888;">Average Rating</div>' +
+      '</div>' +
+      '<div class="section-card" style="padding:20px;text-align:center;border-top:3px solid var(--gold);">' +
+        '<div style="font-size:2.5rem;font-weight:700;color:var(--gold);">' + total + '</div>' +
+        '<div style="font-size:11px;color:#888;margin-top:4px;">Total Reviews</div>' +
+      '</div>' +
+      '<div class="section-card" style="padding:20px;text-align:center;border-top:3px solid #81C784;">' +
+        '<div style="font-size:2.5rem;font-weight:700;color:#81C784;">' + approved + '</div>' +
+        '<div style="font-size:11px;color:#888;margin-top:4px;">Approved</div>' +
+      '</div>' +
+      '<div class="section-card" style="padding:20px;text-align:center;border-top:3px solid #FFB74D;">' +
+        '<div style="font-size:2.5rem;font-weight:700;color:#FFB74D;">' + pending + '</div>' +
+        '<div style="font-size:11px;color:#888;margin-top:4px;">Pending</div>' +
+      '</div>' +
+    '</div>' +
+
+    // Distribution
+    '<div class="section-card" style="padding:20px;">' +
+      '<div class="section-head"><div class="section-title">Rating Distribution</div></div>' +
+      '<div style="max-width:340px;padding-top:8px;">' + dist + '</div>' +
+    '</div>' +
+
+    // Reviews list
+    '<div class="section-card" style="padding:20px;">' +
+      '<div class="section-head">' +
+        '<div class="section-title">All Reviews</div>' +
+        '<button onclick="loadReviews()" style="background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.3);color:var(--gold);padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;">↻ Refresh</button>' +
+      '</div>' +
+      '<div style="margin-top:12px;">' + cards + '</div>' +
+    '</div>' +
+
+    '</div>';
+}
+
+
+async function approveReview(id){
+  try {
+    await fetch(`${API}/reviews/${id}/approve`, { method: 'PUT' });
+    loadReviews();
+  } catch(e){ alert('Could not approve — backend check panu!'); }
+}
+
+async function deleteReview(id){
+  if(!confirm('Delete this review?')) return;
+  try {
+    await fetch(`${API}/reviews/${id}`, { method: 'DELETE' });
+    const el = document.getElementById(`review-${id}`);
+    if(el) el.remove();
+    loadReviews();
+  } catch(e){ alert('Could not delete — backend check panu!'); }
+}
+
+// Update review badge on load
+(async()=>{
+  try {
+    const res = await fetch(`${API}/reviews`);
+    const reviews = await res.json();
+    updateReviewBadge(reviews);
+  } catch(e){}
+})();
+</script>
+</body>
+</html>

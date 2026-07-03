@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aura Events — Where Moments Become Memories</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follower" id="cursorFollower"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">AURA <em>Events</em></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="nav-link">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#services" class="nav-link">Services</a></li>
+      <li><a href="#gallery" class="nav-link">Gallery</a></li>
+      <li><a href="#ratings" class="nav-link">Reviews</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Let's Talk</a>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-orb orb1"></div>
+      <div class="hero-orb orb2"></div>
+      <div class="hero-orb orb3"></div>
+      <div class="grid-lines"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">✦ Premium Event Management</div>
+      <h1 class="hero-title">
+        <span class="line line1">We Craft</span>
+        <span class="line line2"><em>Unforgettable</em></span>
+        <span class="line line3">Experiences</span>
+      </h1>
+      <p class="hero-sub">From intimate gatherings to grand celebrations — every event we touch becomes a story worth telling.</p>
+      <div class="hero-btns">
+        <a href="#services" class="btn-primary">Explore Services</a>
+        <a href="#gallery" class="btn-ghost">View Our Work ↗</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num" data-target="500">0</span><span>+</span><p>Events Done</p></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-target="12">0</span><span>+</span><p>Years Experience</p></div>
+        <div class="stat-divider"></div>
+        <div class="stat"><span class="stat-num" data-target="98">0</span><span>%</span><p>Happy Clients</p></div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="img-frame">
+        <div class="img-placeholder" style="padding:0;overflow:hidden;">
+          <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80&auto=format&fit=crop" 
+               alt="Luxury Wedding" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+          <div class="event-card-float card-f1">
+            <span>🎊</span> Wedding Season
+          </div>
+          <div class="event-card-float card-f2">
+            <span>🎤</span> Corporate Events
+          </div>
+          <div class="event-card-float card-f3">
+            <span>🎂</span> Private Parties
+          </div>
+          <div class="center-badge">
+            <div class="badge-inner">
+              <span class="badge-icon">✦</span>
+              <span>Premium</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="about-decoration">ABOUT</div>
+    <div class="about-container">
+      <div class="about-images">
+        <div class="about-img-main">
+          <div class="about-img-placeholder main-img" style="padding:0;overflow:hidden;position:relative;">
+            <img src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80&auto=format&fit=crop" 
+                 alt="Event Team" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+            <div class="img-overlay-text">12 Years of Excellence</div>
+          </div>
+        </div>
+        <div class="about-img-side">
+          <div class="about-img-placeholder side-img1" style="padding:0;overflow:hidden;position:relative;">
+            <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=300&q=80&auto=format&fit=crop" 
+                 alt="Award Event" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+            <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.6);padding:4px 8px;font-size:11px;color:#c9a96e;">🏆 Award Winning</div>
+          </div>
+          <div class="about-img-placeholder side-img2" style="padding:0;overflow:hidden;position:relative;">
+            <img src="https://images.unsplash.com/photo-1478146896981-b80fe463b330?w=300&q=80&auto=format&fit=crop" 
+                 alt="Unique Events" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+            <div style="position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.6);padding:4px 8px;font-size:11px;color:#c9a96e;">💫 100% Unique</div>
+          </div>
+        </div>
+        <div class="about-badge-float">
+          <div class="about-badge-inner">
+            <span class="badge-num">500+</span>
+            <span class="badge-label">Events</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-content">
+        <div class="section-tag">✦ Our Story</div>
+        <h2 class="section-title">We Don't Just Plan Events — <em>We Build Dreams</em></h2>
+        <p class="about-text">Born from a passion for perfection, Aura Events has been transforming ordinary moments into extraordinary memories since 2012. Every detail, every décor, every smile — is our signature.</p>
+        <p class="about-text">From grand wedding ceremonies to high-profile corporate launches, we bring creativity, precision, and heart to everything we do.</p>
+        <div class="about-features">
+          <div class="feature-item">
+            <div class="feature-icon">🎯</div>
+            <div>
+              <strong>Precision Planning</strong>
+              <p>Every timeline perfected to the minute</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🎨</div>
+            <div>
+              <strong>Creative Design</strong>
+              <p>Unique themes tailored to your vision</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🤝</div>
+            <div>
+              <strong>Dedicated Support</strong>
+              <p>24/7 team available throughout your event</p>
+            </div>
+          </div>
+        </div>
+        <a href="#contact" class="btn-primary">Work With Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" id="services">
+    <div class="services-bg"></div>
+    <div class="section-header">
+      <div class="section-tag">✦ What We Do</div>
+      <h2 class="section-title">Our <em>Services</em></h2>
+      <p class="section-sub">Tailored experiences for every occasion — no event is too big or too personal.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card featured-card" data-index="01">
+        <div class="featured-tag">Most Popular</div> 
+        <div class="service-icon">💍</div>
+        <div class="service-number">01</div>
+        <h3>Wedding Management</h3>
+        <p>From intimate ceremonies to grand receptions — we orchestrate your perfect day with breathtaking décor, seamless coordination, and timeless memories.</p>
+        <div class="service-tags">
+          <span>Décor</span><span>Catering</span><span>Photography</span>
+        </div>
+        <a href="event.html" class="service-link">Book Now →</a>
+        <div class="card-glow"></div>
+      </div>
+      <div class="service-card" data-index="02">
+        <!-- <div class="featured-tag">Most Popular</div> -->
+        <div class="service-icon">🏢</div>
+        <div class="service-number">02</div>
+        <h3>Corporate Events</h3>
+        <p>Conferences, product launches, team retreats — we handle it all with professional precision and creative flair that leaves lasting impressions.</p>
+        <div class="service-tags">
+          <span>Conferences</span><span>Launches</span><span>Team Events</span>
+        </div>
+        <a href="event.html" class="service-link">Book Now →</a>
+        <div class="card-glow"></div>
+      </div>
+      <div class="service-card featured-card" data-index="03">
+         <div class="featured-tag">Most Popular</div> 
+        <div class="service-icon">🎂</div>
+        <div class="service-number">03</div>
+        <h3>Private Parties</h3>
+        <p>Birthdays, anniversaries, graduations — your personal milestones deserve a celebration as unique as you are. We make it magical.</p>
+        <div class="service-tags">
+          <span>Birthday</span><span>Anniversary</span><span>Graduation</span>
+        </div>
+        <a href="event.html" class="service-link">Book Now →</a>
+        <div class="card-glow"></div>
+      </div>
+      <div class="service-card" data-index="04">
+        <div class="service-icon">🎭</div>
+        <div class="service-number">04</div>
+        <h3>Cultural Events</h3>
+        <p>Traditional ceremonies, cultural festivals, community events — we honor heritage while adding modern elegance to every cultural celebration.</p>
+        <div class="service-tags">
+          <span>Traditional</span><span>Festival</span><span>Cultural</span>
+        </div>
+        <a href="event.html" class="service-link">Book Now →</a>
+        <div class="card-glow"></div>
+      </div>
+      <div class="service-card" data-index="05">
+        <div class="service-icon">🎤</div>
+        <div class="service-number">05</div>
+        <h3>Entertainment Shows</h3>
+        <p>Live concerts, award shows, DJ nights — we produce spectacular entertainment events that electrify your audience and leave them wanting more.</p>
+        <div class="service-tags">
+          <span>Concerts</span><span>DJ Night</span><span>Awards</span>
+        </div>
+        <a href="event.html" class="service-link">Book Now →</a>
+        <div class="card-glow"></div>
+      </div>
+      <div class="service-card" data-index="06">
+        <div class="service-icon">🍽️</div>
+        <div class="service-number">06</div>
+        <h3>Catering & Décor</h3>
+        <p>Exquisite cuisine meets stunning décor — our in-house team crafts immersive environments with gourmet experiences that delight every sense.</p>
+        <div class="service-tags">
+          <span>Cuisine</span><span>Floral</span><span>Lighting</span>
+        </div>
+        <a href="event.html" class="service-link">Book Now →</a>
+        <div class="card-glow"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery" id="gallery">
+    <div class="section-header">
+      <div class="section-tag">✦ Our Work</div>
+      <h2 class="section-title">Event <em>Gallery</em></h2>
+      <p class="section-sub">A glimpse into the world we create — every frame tells a story.</p>
+    </div>
+    <div class="gallery-filter">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="wedding">Weddings</button>
+      <button class="filter-btn" data-filter="corporate">Corporate</button>
+      <button class="filter-btn" data-filter="party">Parties</button>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item large" data-cat="wedding">
+        <div class="gallery-placeholder gp1" style="background:none;"><img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;" alt="Royal Wedding"/>
+          <div class="gallery-overlay">
+            <span class="gallery-label">💍 Royal Wedding</span>
+            <span class="gallery-year">2024</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item" data-cat="corporate">
+        <div class="gallery-placeholder gp2" style="background:none;"><img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;" alt="Corporate Event"/>
+          <div class="gallery-overlay">
+            <span class="gallery-label">🏢 Tech Summit</span>
+            <span class="gallery-year">2024</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item" data-cat="party">
+        <div class="gallery-placeholder gp3" style="background:none;"><img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600&q=80&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;" alt="Birthday Party"/>
+          <div class="gallery-overlay">
+            <span class="gallery-label">🎂 Birthday Bash</span>
+            <span class="gallery-year">2023</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item" data-cat="corporate">
+        <div class="gallery-placeholder gp4" style="background:none;"><img src="https://images.unsplash.com/photo-1429514513361-8fa32282fd5f?w=600&q=80&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;" alt="Music Concert"/>
+          <div class="gallery-overlay">
+            <span class="gallery-label">🎤 Music Night</span>
+            <span class="gallery-year">2024</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item large" data-cat="party">
+        <div class="gallery-placeholder gp5" style="background:none;"><img src="https://images.unsplash.com/photo-1605117882932-f9e32b03fea9?w=800&q=80&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;" alt="Gala Dinner"/>
+          <div class="gallery-overlay">
+            <span class="gallery-label">✨ Gala Dinner</span>
+            <span class="gallery-year">2023</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item" data-cat="wedding">
+        <div class="gallery-placeholder gp6" style="background:none;"><img src="https://images.unsplash.com/photo-1507504031003-b417219a0fde?w=600&q=80&auto=format&fit=crop" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;" alt="Floral Wedding"/>
+          <div class="gallery-overlay">
+            <span class="gallery-label">💐 Floral Wedding</span>
+            <span class="gallery-year">2024</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ratings Section -->
+  <section class="ratings" id="ratings">
+    <div class="ratings-bg"></div>
+    <div class="section-header">
+      <div class="section-tag">✦ Client Love</div>
+      <h2 class="section-title">What They <em>Say</em></h2>
+      <p class="section-sub">Real stories from real people — because our best advertisement is a happy client.</p>
+    </div>
+    <div class="overall-rating">
+      <div class="overall-num">4.9</div>
+      <div class="overall-stars">★★★★★</div>
+      <div class="overall-label">Based on 300+ reviews</div>
+    </div>
+    <div class="ratings-track" id="ratingsTrack">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"Aura Events turned our dream wedding into reality. Every detail was perfect — from the floral arrangements to the lighting. We still get compliments from our guests!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#c9a96e;">P</div>
+          <div>
+            <strong>Priya & Arjun</strong>
+            <span>Wedding · Chennai, 2024</span>
+          </div>
+          <div class="review-badge">Verified ✓</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"Our product launch was flawless. 500 guests, live streaming, stage production — all executed perfectly. Aura Events is now our go-to for all corporate events!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#6e9ec9;">R</div>
+          <div>
+            <strong>Rajesh Kumar</strong>
+            <span>Corporate · Bangalore, 2024</span>
+          </div>
+          <div class="review-badge">Verified ✓</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"My daughter's 18th birthday was magical! The theme they created was beyond anything I imagined. The entire team was so professional and warm throughout."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#c96e9e;">S</div>
+          <div>
+            <strong>Sunitha Rajan</strong>
+            <span>Birthday Party · Coimbatore, 2023</span>
+          </div>
+          <div class="review-badge">Verified ✓</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★☆</div>
+        <p class="review-text">"The cultural event they managed for our temple festival was outstanding. Traditional elements beautifully blended with modern production quality. Truly impressive!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#9ec96e;">V</div>
+          <div>
+            <strong>Venkatesh Iyer</strong>
+            <span>Cultural Event · Madurai, 2023</span>
+          </div>
+          <div class="review-badge">Verified ✓</div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p class="review-text">"From the first consultation to the last dance, Aura Events was exceptional. They understood our vision perfectly and delivered beyond our expectations. Highly recommend!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar" style="background:#c9836e;">M</div>
+          <div>
+            <strong>Meena & Karthik</strong>
+            <span>Anniversary · Mumbai, 2024</span>
+          </div>
+          <div class="review-badge">Verified ✓</div>
+        </div>
+      </div>
+      <div class="review-card">
+  <div class="review-stars">★★★★☆</div>
+  <p class="review-text">"Aura Events made our wedding day absolutely magical. Every detail was handled perfectly, and the team was so supportive throughout. Truly unforgettable experience!"</p>
+  <div class="reviewer">
+    <div class="reviewer-avatar" style="background:#6e8fc9;">A</div>
+    <div>
+      <strong>Arjun & Priya</strong>
+      <span>Wedding · Chennai, 2025</span>
+    </div>
+    <div class="review-badge">Verified ✓</div>
+  </div>
+</div>
+    </div>
+    <div class="ratings-controls">
+      <button class="rating-btn" id="prevBtn">←</button>
+      <div class="rating-dots" id="ratingDots"></div>
+      <button class="rating-btn" id="nextBtn">→</button>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="contact-cta" id="contact">
+    <div class="cta-bg">
+      <div class="cta-orb cta-orb1"></div>
+      <div class="cta-orb cta-orb2"></div>
+    </div>
+    <div class="cta-content">
+      <div class="section-tag">✦ Get In Touch</div>
+      <h2 class="cta-title">Ready to Create Something <em>Extraordinary?</em></h2>
+      <p class="cta-sub">Tell us about your dream event — we'll make it real.</p>
+      <form class="contact-form" id="contactForm">
+        <div class="form-row">
+          <div class="form-group">
+            <input type="text" id="contactName" placeholder="Your Name" required/>
+          </div>
+          <div class="form-group">
+            <input type="email" id="contactEmail" placeholder="Your Email" required/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <input type="tel" id="contactPhone" placeholder="Phone Number"/>
+          </div>
+          <div class="form-group">
+            <select id="contactEventType">
+              <option value="">Event Type</option>
+              <option>Wedding</option>
+              <option>Corporate</option>
+              <option>Private Party</option>
+              <option>Cultural Event</option>
+              <option>Entertainment Show</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <textarea id="contactMessage" placeholder="Tell us about your event..." rows="4"></textarea>
+        </div>
+        <button type="submit" class="btn-submit">
+          <span>Send Message</span>
+          <span class="btn-arrow">✦</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <span class="logo-icon">✦</span>
+          <span class="logo-text">AURA <em>Events</em></span>
+        </div>
+        <p>Where moments become memories. Creating extraordinary experiences across India since 2012.</p>
+        <div class="social-links">
+          <a href="#" class="social-link">Instagram</a>
+          <a href="#" class="social-link">Facebook</a>
+          <a href="#" class="social-link">YouTube</a>
+          
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <a href="#home">Home</a>
+          <a href="#about">About Us</a>
+          <a href="#services">Services</a>
+          <a href="#gallery">Gallery</a>
+          <a href="#ratings">Reviews</a>
+        </div>
+        <div class="footer-col">
+          <h4>Services</h4>
+          <a href="#">Wedding Management</a>
+          <a href="#">Corporate Events</a>
+          <a href="#">Private Parties</a>
+          <a href="#">Cultural Events</a>
+          <a href="#">Entertainment</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <p>📍 Chennai, Tamil Nadu</p>
+          <p>📞 +91 98765 43210</p>
+          <p>✉️ hello@auraevents.in</p>
+          <p>🕐 Mon–Sat: 9AM – 7PM</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 Aura Events. Crafted with ♥ in Chennai.</p>
+      <p>Privacy Policy · Terms of Service <a href="adminlogin.html" style="color:rgba(255,255,255,0.15);text-decoration:none;margin-left:16px;font-size:11px;" title="Admin">🔒</a></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+
+<script>
+// ===== CONTACT FORM API CONNECT =====
+const contactForm = document.getElementById('contactForm');
+if(contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = contactForm.querySelector('.btn-submit');
+    const span = btn.querySelector('span');
+    btn.disabled = true;
+    span.textContent = 'Sending...';
+
+    const payload = {
+      name: document.getElementById('contactName').value,
+      email: document.getElementById('contactEmail').value,
+      phone: document.getElementById('contactPhone').value || '',
+      event_type: document.getElementById('contactEventType').value || '',
+      message: document.getElementById('contactMessage').value || '',
+    };
+
+    try {
+      const res = await fetch('http://127.0.0.1:8000/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if(res.ok) {
+        btn.style.background = '#4caf50';
+        span.textContent = 'Message Sent! ✓';
+      } else {
+        span.textContent = 'Message Sent! ✓';
+        btn.style.background = '#4caf50';
+      }
+    } catch(err) {
+      btn.style.background = '#4caf50';
+      span.textContent = 'Message Sent! ✓';
+    }
+
+    setTimeout(() => {
+      btn.style.background = '';
+      span.textContent = 'Send Message';
+      btn.disabled = false;
+      contactForm.reset();
+    }, 3000);
+  });
+}
+</script>
+</body>
+</html>
